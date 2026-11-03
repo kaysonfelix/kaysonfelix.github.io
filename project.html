@@ -25,7 +25,10 @@
     <a id="tab-log" href="#">Lab notebook<span class="count" id="count" hidden></span></a>
   </nav>
 
-  <main id="content"><p class="empty">Loading…</p></main>
+  <div class="pgrid">
+    <main id="content"><p class="empty">Loading…</p></main>
+    <aside class="side" id="side" aria-label="On this page"></aside>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
@@ -36,7 +39,7 @@
   const id = (q.get('p') || '').replace(/[^a-z0-9_-]/gi, '');
   const view = q.get('view') === 'log' ? 'log' : 'overview';
   const base = 'projects/' + id + '/';
-  const content = document.getElementById('content');
+  const content = document.getElementById('content'), side = document.getElementById('side');
 
   const tabO = document.getElementById('tab-overview'), tabL = document.getElementById('tab-log');
   tabO.href = 'project.html?p=' + id;
@@ -66,11 +69,28 @@
     const div = document.createElement('div'); div.className = 'md';
     Site.render(overview, base, div);
     content.replaceChildren(div);
+    // sidebar: jump links to each "## " section
+    const hs = [...div.querySelectorAll('h2')];
+    if (hs.length){
+      side.innerHTML = '<h4>Contents</h4><ol></ol>';
+      hs.forEach((h, i) => {
+        h.id = 's' + (i + 1);
+        const li = document.createElement('li'), a = document.createElement('a');
+        a.href = '#' + h.id; a.textContent = h.textContent; li.append(a); side.querySelector('ol').append(li);
+      });
+    }
   } else {
     if (!entries.length){ content.innerHTML = '<p class="empty">No log entries yet.</p>'; return; }
     const list = document.createElement('div'); list.className = 'log';
-    for (const e of entries){
-      const art = document.createElement('article'); art.className = 'log-entry';
+    side.innerHTML = '<h4>Entries</h4><ol></ol>';
+    entries.forEach((e, i) => {
+      const li = document.createElement('li'), a = document.createElement('a');
+      a.href = '#e' + (i + 1);
+      a.innerHTML = '<span class="d"></span>'; a.firstChild.textContent = Site.fmtDate(e.date);
+      a.append(e.title); li.append(a); side.querySelector('ol').append(li);
+    });
+    for (const [i, e] of entries.entries()){
+      const art = document.createElement('article'); art.className = 'log-entry'; art.id = 'e' + (i + 1);
       const time = document.createElement('time'); time.textContent = Site.fmtDate(e.date); if (e.date) time.dateTime = e.date;
       const col = document.createElement('div'); col.style.minWidth = '0';
       const h = document.createElement('h2'); h.textContent = e.title;
