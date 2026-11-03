@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Redaction:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--
+  You don't need to edit this page. It shows any project folder:
+    project.html?p=project-1            -> Overview tab   (projects/project-1/overview.md)
+    project.html?p=project-1&view=log   -> Lab notebook   (projects/project-1/log.md)
+-->
+<div class="wrap">
+  <a class="back" href="index.html">← All projects</a>
+  <h1 class="ptitle" id="title">Project</h1>
+  <div class="psub" id="sub"></div>
+
+  <nav class="tabs" aria-label="Project sections">
+    <a id="tab-overview" href="#">Overview</a>
+    <a id="tab-log" href="#">Lab notebook<span class="count" id="count" hidden></span></a>
+  </nav>
+
+  <main id="content"><p class="empty">Loading…</p></main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="site.js"></script>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search);
+  const id = (q.get('p') || '').replace(/[^a-z0-9_-]/gi, '');
+  const view = q.get('view') === 'log' ? 'log' : 'overview';
+  const base = 'projects/' + id + '/';
+  const content = document.getElementById('content');
+
+  const tabO = document.getElementById('tab-overview'), tabL = document.getElementById('tab-log');
+  tabO.href = 'project.html?p=' + id;
+  tabL.href = 'project.html?p=' + id + '&view=log';
+  (view === 'log' ? tabL : tabO).setAttribute('aria-current', 'page');
+
+  if (!id){ content.innerHTML = '<p class="empty">No project selected.</p>'; return; }
+
+  const [overview, log] = await Promise.all([Site.load(base + 'overview.md'), Site.load(base + 'log.md')]);
+
+  // page title comes from the first "# " line of overview.md
+  const t = overview && overview.match(/^#\s+(.+)$/m);
+  const title = t ? t[1].trim() : id;
+  document.getElementById('title').textContent = title;
+  document.title = title;
+
+  const entries = log ? Site.parseLog(log) : [];
+  if (entries.length){
+    const c = document.getElementById('count');
+    c.textContent = entries.length; c.hidden = false;
+    const latest = entries.find(e => /^\d{4}-\d{2}-\d{2}$/.test(e.date));
+    if (latest) document.getElementById('sub').textContent = 'Last updated ' + Site.fmtDate(latest.date);
+  }
+
+  if (view === 'overview'){
+    if (!overview){ content.innerHTML = '<p class="empty">No overview yet.</p>'; return; }
+    const div = document.createElement('div'); div.className = 'md';
+    Site.render(overview, base, div);
+    content.replaceChildren(div);
+  } else {
+    if (!entries.length){ content.innerHTML = '<p class="empty">No log entries yet.</p>'; return; }
+    const list = document.createElement('div'); list.className = 'log';
+    for (const e of entries){
+      const art = document.createElement('article'); art.className = 'log-entry';
+      const time = document.createElement('time'); time.textContent = Site.fmtDate(e.date); if (e.date) time.dateTime = e.date;
+      const col = document.createElement('div'); col.style.minWidth = '0';
+      const h = document.createElement('h2'); h.textContent = e.title;
+      const md = document.createElement('div'); md.className = 'md';
+      Site.render(e.body, base, md);
+      col.append(h, md); art.append(time, col); list.append(art);
+    }
+    content.replaceChildren(list);
+  }
+})();
+</script>
+</body>
+</html>
