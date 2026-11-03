@@ -9,26 +9,55 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Redaction:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="layout.css">
 </head>
 <body>
-<div class="wrap">
 
-  <!-- ===================== HEADER ===================== -->
-  <header>
-    <!-- Replace with: <img class="photo" src="media/headshot.jpg" alt="Your Name"> -->
-    <div class="photo">photo</div>
-    <div>
-      <h1>[Your Name]</h1>
-      <p class="affil">[Major] · [University] · [Expected graduation]</p>
-      <p class="lede">[Two sentences: what you work on, and the kind of internship you're looking for.]</p>
-      <nav class="links" aria-label="Profiles">
+<!-- ===================== TOP BAR ===================== -->
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="tb-name" href="#top">[Your Name]</a>
+    <nav class="tb-nav" aria-label="Sections">
+      <a href="#projects-sec">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#coursework">Coursework</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button type="button" class="tb-print" id="printBtn">Print CV</button>
+  </div>
+</div>
+<div class="preview-bar" id="previewBar" hidden><span>Print preview: this is how the page prints or saves as a PDF</span><button type="button" id="doPrint">Print / Save PDF</button><button type="button" id="exitPreview">Close preview</button></div>
+
+<div class="wrap" id="top">
+
+  <!-- ===================== INTRO: you on the left, about on the right ===================== -->
+  <section class="intro">
+    <header class="who">
+      <!-- Replace with: <img class="photo" src="media/headshot.jpg" alt="Your Name"> -->
+      <div class="photo">photo</div>
+      <div>
+        <h1>[Your Name]</h1>
+        <p class="affil">[Major] · [University] · [Expected graduation]</p>
+        <p class="lede">[Two sentences: what you work on, and the kind of internship you're looking for.]</p>
+        <nav class="links" aria-label="Profiles">
         <a href="resume.pdf"><svg viewBox="0 0 16 16"><path d="M2 1.75C2 .78 2.78 0 3.75 0h6.59c.46 0 .9.18 1.23.51l2.92 2.92c.33.33.51.77.51 1.23v9.59A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .14.11.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.06V4.25c0 .14.11.25.25.25h2.69Z"/></svg>Resume</a>
         <a href="https://github.com/your-username" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>GitHub</a>
         <a href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M13.6 0H2.4A2.4 2.4 0 0 0 0 2.4v11.2A2.4 2.4 0 0 0 2.4 16h11.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 13.6 0ZM4.9 13.3H2.6V6h2.3ZM3.75 5A1.33 1.33 0 1 1 5.1 3.67 1.33 1.33 0 0 1 3.75 5Zm9.55 8.3H11V9.75c0-.85 0-1.94-1.18-1.94S8.46 8.73 8.46 9.69v3.61H6.18V6h2.19v1h.03a2.4 2.4 0 0 1 2.16-1.19c2.31 0 2.74 1.52 2.74 3.5Z"/></svg>LinkedIn</a>
         <a href="mailto:you@example.com"><svg viewBox="0 0 16 16"><path d="M1.75 2h12.5c.97 0 1.75.78 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.78.78 2 1.75 2ZM1.5 12.25c0 .14.11.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.33L8.53 8.9a.75.75 0 0 1-.94 0L1.5 5.33Zm13-8.18v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.95Z"/></svg>Email</a>
       </nav>
-    </div>
-  </header>
+      </div>
+    </header>
+    <aside class="about" id="about">
+      <h2 class="label">About</h2>
+      <p>[A short paragraph: how you got into your field and what you want to work on.]</p>
+      <table class="kv">
+        <tr><td>Program</td><td>[ ]</td></tr>
+        <tr><td>Focus</td><td>[ ]</td></tr>
+        <tr><td>Seeking</td><td>[ ]</td></tr>
+      </table>
+    </aside>
+  </section>
 
   <div class="spectrum" aria-hidden="true">
     <canvas id="spec"></canvas>
@@ -36,15 +65,16 @@
     <div class="mark" id="mark"><span id="lam">λ = 532 nm</span></div>
   </div>
 
-  <!-- ===================== PROJECTS (open) ===================== -->
-  <details open>
-    <summary><svg class="chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg><h2>Projects</h2><span class="meta">3</span></summary>
-    <div class="body">
+  <!-- ===================== PROJECTS (full width) ===================== -->
+  <section class="block" id="projects-sec">
+    <div class="block-head">
+      <h2>Projects</h2>
       <div class="scroll-nav">
         <button type="button" class="arrow" data-dir="-1" aria-label="Scroll projects left">←</button>
         <button type="button" class="arrow" data-dir="1" aria-label="Scroll projects right">→</button>
       </div>
-      <div class="projects" id="projects">
+    </div>
+    <div class="projects" id="projects">
 
         <!-- Copy this <article> block for each project.
              Set data-project to the project's folder name inside /projects (e.g. "pat-terminal"),
@@ -58,43 +88,32 @@
             <div class="result"><span>Result:</span> [Your best number, e.g. a measured error or range]</div>
             <div class="tags"><span>[tag]</span><span>[tag]</span><span>[tag]</span></div>
             <div class="pmeta"></div>
-            <div class="plinks"><a class="btn" href="project.html?p=project-1">Overview</a><a class="btn" href="project.html?p=project-1&amp;view=log">Lab notebook</a><a class="ext" href="https://github.com/kaysonfelix" target="_blank" rel="noopener">Code ↗</a></div>
+          </div>
+          <div class="pactions">
+            <a href="project.html?p=project-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 1.75C2 .78 2.78 0 3.75 0h6.59c.46 0 .9.18 1.23.51l2.92 2.92c.33.33.51.77.51 1.23v9.59A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .14.11.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.06V4.25c0 .14.11.25.25.25h2.69Z"/></svg><span>Overview</span><i aria-hidden="true">→</i></a>
+            <a href="project.html?p=project-1&amp;view=log"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.25c1.23 0 2.32.6 3 1.52A3.74 3.74 0 0 1 11 1h4.25a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.51a2.25 2.25 0 0 0-2.25 2.25.75.75 0 0 1-1.5 0A2.25 2.25 0 0 0 4.74 13H.75a.75.75 0 0 1-.75-.75Zm7.25 2.5A2.25 2.25 0 0 0 5 2.5H1.5v9h3.24c.95 0 1.83.3 2.51.81Zm1.5 9.06A3.74 3.74 0 0 1 11.25 11.5h3.25v-9H11a2.25 2.25 0 0 0-2.25 2.25Z"/></svg><span>Lab notebook</span><i aria-hidden="true">→</i></a>
           </div>
         </article>
 
-        <article class="project" data-project="project-2">
-          <div class="img">image</div>
-          <div class="info">
-            <div class="top"><h3>[Project title]</h3><span class="status">[Status]</span></div>
-            <p>[One or two sentences: what it does and why.]</p>
-            <div class="result"><span>Result:</span> [Your best number]</div>
-            <div class="tags"><span>[tag]</span><span>[tag]</span><span>[tag]</span></div>
-            <div class="pmeta"></div>
-            <div class="plinks"><a class="btn" href="project.html?p=project-2">Overview</a><a class="btn" href="project.html?p=project-2&amp;view=log">Lab notebook</a><a class="ext" href="https://github.com/kaysonfelix" target="_blank" rel="noopener">Code ↗</a></div>
-          </div>
+
+        <!-- Placeholder: replace with a full project block (copy the one above) once you pick the project -->
+        <article class="project tba" aria-label="Next project, in planning">
+          <span class="tba-tag">In planning</span>
+          <p>Next project</p>
+        </article>
+        <!-- Placeholder: replace with a full project block (copy the one above) once you pick the project -->
+        <article class="project tba" aria-label="Next project, in planning">
+          <span class="tba-tag">In planning</span>
+          <p>Next project</p>
         </article>
 
-        <article class="project" data-project="project-3">
-          <div class="img">image</div>
-          <div class="info">
-            <div class="top"><h3>[Project title]</h3><span class="status">[Status]</span></div>
-            <p>[One or two sentences: what it does and why.]</p>
-            <div class="result"><span>Result:</span> [Your best number]</div>
-            <div class="tags"><span>[tag]</span><span>[tag]</span><span>[tag]</span></div>
-            <div class="pmeta"></div>
-            <div class="plinks"><a class="btn" href="project.html?p=project-3">Overview</a><a class="btn" href="project.html?p=project-3&amp;view=log">Lab notebook</a><a class="ext" href="https://github.com/kaysonfelix" target="_blank" rel="noopener">Code ↗</a></div>
-          </div>
-        </article>
-
-      </div>
     </div>
-  </details>
+  </section>
 
-  <div class="sections">
-  <!-- ===================== EXPERIENCE ===================== -->
-  <details>
-    <summary><svg class="chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg><h2>Experience &amp; activities</h2></summary>
-    <div class="body">
+  <!-- ===================== TWO COLUMNS: experience | sidebar ===================== -->
+  <div class="cols">
+    <section class="block main-col" id="experience">
+      <h2>Experience &amp; activities</h2>
       <!-- Copy this block for each job, club, competition or research role -->
       <div class="entry">
         <h3>[Role]</h3><span class="when">[Start – End]</span>
@@ -106,54 +125,39 @@
         <span class="where">[Organization]</span>
         <ul><li>[What you did]</li></ul>
       </div>
-    </div>
-  </details>
+    </section>
 
-  <!-- ===================== SKILLS ===================== -->
-  <details>
-    <summary><svg class="chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg><h2>Skills</h2></summary>
-    <div class="body">
-      <table class="kv">
-        <tr><td>Languages</td><td>[ ]</td></tr>
-        <tr><td>Hardware</td><td>[ ]</td></tr>
-        <tr><td>Lab &amp; optics</td><td>[ ]</td></tr>
-        <tr><td>Software</td><td>[ ]</td></tr>
-      </table>
+    <div class="side-col">
+      <section class="block" id="skills">
+        <h2>Skills</h2>
+        <table class="kv">
+          <tr><td>Languages</td><td>[ ]</td></tr>
+          <tr><td>Lab &amp; optics</td><td>[ ]</td></tr>
+          <tr><td>Software</td><td>[ ]</td></tr>
+        </table>
+      </section>
+      <section class="block" id="coursework">
+        <h2>Coursework</h2>
+        <!-- Add one <tr> row per course. Only the first 4 show; the rest fold under "Show all". -->
+        <table class="kv" id="courses">
+          <tr><td>[Code]</td><td>[Course name 1]</td></tr>
+          <tr><td>[Code]</td><td>[Course name 2]</td></tr>
+          <tr><td>[Code]</td><td>[Course name 3]</td></tr>
+          <tr><td>[Code]</td><td>[Course name 4]</td></tr>
+          <tr><td>[Code]</td><td>[Course name 5]</td></tr>
+          <tr><td>[Code]</td><td>[Course name 6]</td></tr>
+          <tr><td>[Code]</td><td>[Course name 7]</td></tr>
+        </table>
+      </section>
+      <section class="block" id="contact">
+        <h2>Contact</h2>
+        <table class="kv">
+          <tr><td>Email</td><td><code>[you@example.com]</code></td></tr>
+          <tr><td>LinkedIn</td><td><a href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener">[linkedin.com/in/your-handle]</a></td></tr>
+          <tr><td>GitHub</td><td><a href="https://github.com/your-username" target="_blank" rel="noopener">[github.com/your-username]</a></td></tr>
+        </table>
+      </section>
     </div>
-  </details>
-
-  <!-- ===================== COURSEWORK ===================== -->
-  <details>
-    <summary><svg class="chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg><h2>Coursework</h2></summary>
-    <div class="body">
-      <table class="kv">
-        <tr><td>[Course code]</td><td>[Course name]</td></tr>
-        <tr><td>[Course code]</td><td>[Course name]</td></tr>
-        <tr><td>[Course code]</td><td>[Course name]</td></tr>
-      </table>
-    </div>
-  </details>
-
-  <!-- ===================== ABOUT ===================== -->
-  <details>
-    <summary><svg class="chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg><h2>About</h2></summary>
-    <div class="body">
-      <p>[A short paragraph: how you got into your field and what you want to work on.]</p>
-    </div>
-  </details>
-
-  <!-- ===================== CONTACT ===================== -->
-  <details>
-    <summary><svg class="chev" viewBox="0 0 16 16"><path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z"/></svg><h2>Contact</h2></summary>
-    <div class="body">
-      <table class="kv">
-        <tr><td>Email</td><td><code>[you@example.com]</code></td></tr>
-        <tr><td>LinkedIn</td><td><a href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener">[linkedin.com/in/your-handle]</a></td></tr>
-        <tr><td>GitHub</td><td><a href="https://github.com/your-username" target="_blank" rel="noopener">[github.com/your-username]</a></td></tr>
-      </table>
-    </div>
-  </details>
-
   </div>
 
   <footer>[Your Name] · Updated [Month Year]</footer>
@@ -240,6 +244,51 @@ document.querySelectorAll('.project[data-project]').forEach(async card => {
   const latest = e[0];
   card.querySelector('.pmeta').textContent = e.length + (e.length === 1 ? ' log entry' : ' log entries') + (latest ? ' · last updated ' + Site.fmtDate(latest.date) : '');
 });
+</script>
+<script>
+/* top bar: highlight the section you're reading */
+(() => {
+  const links = [...document.querySelectorAll('.tb-nav a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting){
+      links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    } });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  secs.forEach(s => io.observe(s));
+})();
+
+/* Print CV. On the live site the button opens the print dialog.
+   (In the chat preview, printing is blocked, so it shows the print layout on screen instead.) */
+(() => {
+  const bar = document.getElementById('previewBar'), root = document.documentElement;
+  let printed = false;
+  addEventListener('beforeprint', () => { printed = true; });
+  document.getElementById('printBtn').addEventListener('click', () => {
+    printed = false;
+    window.print();
+    // if no print dialog opened (blocked in the chat preview), show the print layout on screen
+    setTimeout(() => { if (!printed){ root.classList.add('print-preview'); bar.hidden = false; scrollTo(0, 0); } }, 400);
+  });
+  document.getElementById('exitPreview').addEventListener('click', () => { root.classList.remove('print-preview'); bar.hidden = true; });
+  document.getElementById('doPrint').addEventListener('click', () => window.print());
+})();
+</script>
+<script>
+/* coursework: show the first 4 rows, fold the rest behind a toggle */
+(() => {
+  const SHOW = 4, t = document.getElementById('courses');
+  if (!t) return;
+  const rows = [...t.rows];
+  if (rows.length <= SHOW) return;
+  rows.slice(SHOW).forEach(r => r.classList.add('more'));
+  t.classList.add('folded');
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'more-btn';
+  const label = () => b.textContent = t.classList.contains('folded') ? `Show all ${rows.length} courses ▾` : 'Show fewer ▴';
+  b.addEventListener('click', () => { t.classList.toggle('folded'); label(); });
+  label(); t.after(b);
+})();
 </script>
 </body>
 </html>
