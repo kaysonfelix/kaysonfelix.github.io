@@ -98,12 +98,19 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     <div class="pub"><button class="primary" id="signinBtn" type="button">Sign in</button><span class="msg" id="signinMsg" role="status"></span></div>
     <details style="margin-top:18px">
       <summary style="cursor:pointer;font:13px var(--mono);color:var(--link)">How do I get a token?</summary>
+      <p style="margin-top:12px"><b>If you own the site repo</b> (fine-grained token, limited to this one repo):</p>
       <ol>
-        <li>On GitHub, open <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens</b> and choose <b>Generate new token</b>.</li>
-        <li>Name it "Lab notebook". Set an expiration (90 days is fine).</li>
-        <li>Under <b>Resource owner</b> pick the owner of the site repo. Under <b>Repository access</b> choose <b>Only select repositories</b> and pick the site repo.</li>
-        <li>Under <b>Permissions → Repository permissions</b>, set <b>Contents</b> to <b>Read and write</b>. Leave everything else as is.</li>
+        <li>GitHub <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
+        <li>Name it "Lab notebook" and set an expiration.</li>
+        <li><b>Repository access:</b> choose <b>Only select repositories</b> and pick the site repo. (The default, "Public repositories", is read-only and won't work.)</li>
+        <li><b>Permissions → Repository permissions → Contents:</b> set to <b>Read and write</b>.</li>
         <li>Generate, copy the token, and paste it above.</li>
+      </ol>
+      <p style="margin-top:12px"><b>If you're a collaborator</b> (GitHub doesn't let fine-grained tokens edit someone else's repo, so use a classic token):</p>
+      <ol>
+        <li>GitHub <b>Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic)</b>.</li>
+        <li>Name it "Lab notebook", set an expiration, and check only <b>public_repo</b>.</li>
+        <li>Generate, copy the token, and paste it above. Keep it private.</li>
       </ol>
     </details>
   </section>
@@ -369,7 +376,11 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}&view=log`; a.textContent = 'Open the lab notebook'; out.append(a);
       clearForm(false); await loadRecent();
     } catch(e){
-      msg(out, e.status === 409 ? 'Someone else just saved this log. Press Publish again.' : 'Could not publish: ' + e.message, 'err');
+      let t = 'Could not publish: ' + e.message;
+      if (e.status === 409) t = 'Someone else just saved this log. Press Publish again.';
+      else if (e.status === 403 || /not accessible/i.test(e.message)) t = "Your token can read the site but isn't allowed to change it. Owner: edit the token so Repository access is 'Only select repositories' with this repo, and Contents is 'Read and write'. Collaborator: use a classic token with the public_repo box checked. Then sign out, sign in with the token, and press Publish again (your entry is still here).";
+      else if (e.status === 401) t = 'Your token has expired or was revoked. Sign out and sign in with a new one. Your entry is still here.';
+      msg(out, t, 'err');
     } finally { $('publish').disabled = false; }
   };
   function clearForm(resetMsg = true){
