@@ -1,6 +1,12 @@
 {
   "linkedin": "",
-  "gallery": [],
+  "gallery": [
+    {
+      "src": "media/gallery/2026-11-04-lcrd-relaying-data-w78j.jpg",
+      "caption": "",
+      "date": "2026-11-04"
+    }
+  ],
   "people": {
     "kayson felix-davila": {
       "photo": "media/people/kayson-felix-davila.jpg",
