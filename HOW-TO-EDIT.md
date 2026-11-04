@@ -5,7 +5,8 @@ Everything is done on github.com. No code needed for project updates.
 ## Folder layout
 
 ```
-index.html          ← homepage (name, links, projects, involvement, background, experience)
+index.html          ← homepage (name, links, projects, involvement, background, experience, latest updates)
+featured.json       ← which LinkedIn post the homepage shows (set it in admin.html)
 admin.html          ← editor: post lab notebook entries and edit project overviews
 project.html        ← project page template (don't edit)
 style.css           ← colors and fonts for the project pages and editor
@@ -24,6 +25,15 @@ projects/
 In admin.html, pick the project and choose **Edit overview**. Edit the text with the
 toolbar, use **Photo** to upload a picture at the cursor, check **Preview**, and press
 **Save overview**. **Replace bom.xlsx** uploads a new bill of materials spreadsheet.
+
+## Show your latest LinkedIn post on the homepage
+
+On LinkedIn, open the post and choose **⋯ → Embed this post**, copy the code. In admin.html
+choose **Homepage**, paste it, check the preview, and press **Save to homepage**. (A link to
+the post works too.) It's saved in `featured.json`. LinkedIn doesn't let sites pull your
+latest post automatically, so do this each time you post something you want featured.
+
+The **Latest lab notebook entry** box under it updates by itself.
 
 ## Post a lab notebook update (easy way)
 

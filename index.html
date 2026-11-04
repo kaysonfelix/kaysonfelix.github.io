@@ -36,10 +36,29 @@ a:hover{text-decoration:underline}
 h1,h2,h3{text-wrap:balance}
 @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
 
-.shell{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:380px minmax(0,1fr);gap:72px;
+.shell{max-width:1640px;margin:0 auto;display:grid;grid-template-columns:320px minmax(0,1fr) 340px;gap:56px;
   padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
 
 .shell > *{min-width:0}
+
+/* ---------- right rail: latest LinkedIn post + latest lab notebook entry ---------- */
+.rail{position:sticky;top:0;height:100vh;overflow:auto;padding-block:56px 32px;display:flex;flex-direction:column;gap:36px;scrollbar-width:thin}
+.rail h2{font-size:1.15rem;margin-bottom:12px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.rail h2 a{font:12px var(--mono);font-weight:400}
+.li-frame{width:100%;height:430px;border:1px solid var(--border);border-radius:10px;background:var(--panel);display:block}
+.li-empty{border:1px dashed var(--border);border-radius:10px;padding:22px;font:13px var(--mono);color:var(--muted);text-align:center}
+.latest{display:block;border:1px solid var(--border);border-radius:10px;overflow:hidden;color:var(--fg);transition:border-color .15s}
+.latest:hover{border-color:#afb8c1;text-decoration:none}
+.latest img{width:100%;height:170px;object-fit:cover;display:block;border-bottom:1px solid var(--border)}
+.latest .lb{padding:14px 16px 16px;display:grid;gap:6px}
+.latest .lm{font:12px var(--mono);color:var(--muted)}
+.latest h3{font-size:1.05rem;line-height:1.3}
+.latest p{font-size:14.5px;line-height:1.5;color:#3d444d}
+.latest .go{font:500 13px var(--mono);color:var(--link)}
+@media (max-width:1320px){
+  .shell{grid-template-columns:320px minmax(0,1fr)}
+  .rail{grid-column:2;position:static;height:auto;overflow:visible;padding-block:0 72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px;align-items:start}
+}
 
 /* ---------- identity panel ---------- */
 .id{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding-block:56px 32px;overflow:auto}
@@ -88,7 +107,6 @@ section{padding-bottom:64px}
 .sh{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
 .sh h2{font-size:1.5rem;line-height:1.2}
 .sh .n{font:12px var(--mono);color:var(--faint)}
-.sh .rule{flex:1;height:1px;background:var(--border);align-self:center}
 
 /* projects: hover / focus reveals the description */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:18px}
@@ -130,14 +148,12 @@ section{padding-bottom:64px}
 .tl{list-style:none;position:relative}
 .tl > li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 28px;padding:0 0 26px}
 .tl time{font:12px/1.9 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
-.tl .body{position:relative;padding-left:22px;border-left:1px solid var(--border)}
-.tl .body::before{content:"";position:absolute;left:-5px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--fg)}
-.tl > li:last-child .body{border-left-color:transparent}
+.tl .body{position:relative}
 .tl h3{font-size:1.08rem;line-height:1.3}
 .tl .org{color:var(--muted);font-style:italic;font-size:15px}
 .tl ul{margin:6px 0 0 18px;font-size:15.5px;color:#3d444d}
 .tl li li{margin-top:2px}
-@media (max-width:640px){ .tl > li{grid-template-columns:1fr} .tl time{padding-left:22px} }
+@media (max-width:640px){ .tl > li{grid-template-columns:1fr} }
 
 /* involvement: compact rows with logos */
 .inv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
@@ -170,6 +186,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
 
 /* ---------- small screens: panel becomes a hero, index becomes a sticky bar ---------- */
 @media (max-width:980px){
+  .rail{grid-column:1;padding-bottom:48px}
   .shell{grid-template-columns:1fr;gap:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .id{position:relative;height:auto;padding-block:36px 8px;overflow:visible}
   .id .about{max-width:60ch}
@@ -191,7 +208,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
 @page{size:letter;margin:.5in}
 @media print{   *{transition:none!important;opacity:1!important}
   body{font-size:9.5pt;line-height:1.32;background:#fff}
-  .preview-bar, .cta, .socials, .index, .logos, .hint, .acts, .card.tba, .linkbtn, footer, .card .media, .specbar, .inv .mark{display:none!important}
+  .rail, .preview-bar, .cta, .socials, .index, .logos, .hint, .acts, .card.tba, .linkbtn, footer, .card .media, .specbar, .inv .mark{display:none!important}
   .shell{display:block;max-width:none;padding:0}
   .id{position:static;height:auto;padding:0 0 8px;overflow:visible;display:grid;grid-template-columns:1.1fr 1fr;column-gap:24px;border-bottom:2px solid #1f2328}
   .id h1{font-size:19pt;grid-column:1}
@@ -232,7 +249,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
  }
   html.print-preview *{transition:none!important;opacity:1!important}
   html.print-preview body{font-size:9.5pt;line-height:1.32;background:#fff}
-  html.print-preview .cta, html.print-preview .socials, html.print-preview .index, html.print-preview .logos, html.print-preview .hint, html.print-preview .acts, html.print-preview .card.tba, html.print-preview .linkbtn, html.print-preview footer, html.print-preview .card .media, html.print-preview .specbar, html.print-preview .inv .mark{display:none!important}
+  html.print-preview .rail, html.print-preview .cta, html.print-preview .socials, html.print-preview .index, html.print-preview .logos, html.print-preview .hint, html.print-preview .acts, html.print-preview .card.tba, html.print-preview .linkbtn, html.print-preview footer, html.print-preview .card .media, html.print-preview .specbar, html.print-preview .inv .mark{display:none!important}
   html.print-preview .shell{display:block;max-width:none;padding:0}
   html.print-preview .id{position:static;height:auto;padding:0 0 8px;overflow:visible;display:grid;grid-template-columns:1.1fr 1fr;column-gap:24px;border-bottom:2px solid #1f2328}
   html.print-preview .id h1{font-size:19pt;grid-column:1}
@@ -284,7 +301,6 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
   <aside class="id">
     <div class="specbar" id="specbar" aria-hidden="true" title="Visible spectrum, 380–750 nm"><div class="band"></div><div class="ticks"><i style="left:5.41%"></i><i style="left:18.92%"></i><i style="left:32.43%"></i><i style="left:45.95%"></i><i style="left:59.46%"></i><i style="left:72.97%"></i><i style="left:86.49%"></i></div><span class="lbl" style="left:5.41%">400</span><span class="lbl" style="left:32.43%">500</span><span class="lbl" style="left:59.46%">600</span><span class="lbl" style="left:86.49%">700</span><span class="unit">nm</span><span class="mk" id="mk"></span><span class="read" id="read">λ = 532 nm</span></div>
     <h1>Kayson <br>Felix-Davila</h1>
-    <p class="deg">B.S. Photonics Science &amp; Engineering<br>Minor in Electrical Engineering · UCF · 2030</p>
     <p class="tag">Freshman @ UCF | Optics &amp; Photonics Engineering Student</p>
     <p class="about">I'm a first-year photonics student at UCF, minoring in electrical engineering. I'm looking for chances to learn from people who design and build optical systems.</p>
 
@@ -316,7 +332,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
   <main>
 
     <section id="projects">
-      <div class="sh"><h2>Projects</h2><span class="rule"></span></div>
+      <div class="sh"><h2>Projects</h2></div>
       <div class="grid">
         <!-- Project card. Hovering slides the description up; on phones it is always shown. -->
         <article class="card" data-project="project-1" data-href="project.html?p=project-1" tabindex="0" aria-label="PAT Laser Tracking System, open overview">
@@ -339,7 +355,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
     </section>
 
     <section id="involvement">
-      <div class="sh"><h2>Involvement</h2><span class="rule"></span></div>
+      <div class="sh"><h2>Involvement</h2></div>
       <div class="inv">
         <article>
           <div class="mark"><img src="media/spie.png" alt=""></div>
@@ -366,7 +382,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
     </section>
 
     <section id="background">
-      <div class="sh"><h2>Background</h2><span class="rule"></span></div>
+      <div class="sh"><h2>Background</h2></div>
       <div class="facts">
         <div class="edu">
           <h3>Education</h3>
@@ -399,7 +415,7 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
     </section>
 
     <section id="experience">
-      <div class="sh"><h2>Experience</h2><span class="rule"></span></div>
+      <div class="sh"><h2>Experience</h2></div>
       <ol class="tl">
         <li>
           <time>Jan – Jun 2025</time>
@@ -428,6 +444,19 @@ footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);fo
 
     <footer>Kayson Felix-Davila · kaysonfelix789@gmail.com · Updated November 2026</footer>
   </main>
+
+  <!-- ===================== RIGHT RAIL ===================== -->
+  <aside class="rail" aria-label="Latest updates">
+    <section id="linkedin">
+      <h2>Latest on LinkedIn <a href="https://www.linkedin.com/in/kayson-felix-335b9043b/" target="_blank" rel="noopener">Profile ↗</a></h2>
+      <!-- Filled from featured.json. Change the post in admin.html → Homepage. -->
+      <div id="liBox"><div class="li-empty">Loading…</div></div>
+    </section>
+    <section id="latest-log">
+      <h2>Latest lab notebook entry</h2>
+      <div id="logBox"><div class="li-empty">Loading…</div></div>
+    </section>
+  </aside>
 </div>
 
 <script src="site.js"></script>
@@ -477,6 +506,47 @@ document.querySelectorAll('.card[data-href]').forEach(c => {
   };
   document.readyState === 'complete' ? run() : addEventListener('load', run);
   c.addEventListener('mouseenter', () => c.classList.remove('demo'), { once: true });
+})();
+
+/* right rail: featured LinkedIn post (from featured.json) */
+(async () => {
+  const box = document.getElementById('liBox');
+  let src = '';
+  try { const r = await fetch('featured.json', { cache: 'no-cache' }); if (r.ok) src = (await r.json()).linkedin || ''; } catch (e) {}
+  if (!/^https:\/\/www\.linkedin\.com\/embed\/feed\/update\/urn:li:(share|ugcPost|activity):\d+/.test(src)){
+    box.innerHTML = '<div class="li-empty">First post coming soon.</div>'; return;
+  }
+  const f = document.createElement('iframe');
+  f.className = 'li-frame'; f.src = src; f.title = 'Latest LinkedIn post'; f.loading = 'lazy'; f.allowFullscreen = true;
+  box.replaceChildren(f);
+})();
+
+/* right rail: newest lab notebook entry across every project on the page */
+(async () => {
+  const box = document.getElementById('logBox');
+  const ids = [...new Set([...document.querySelectorAll('.card[data-project]')].map(c => c.dataset.project))];
+  const all = [];
+  await Promise.all(ids.map(async id => {
+    const [log, ov] = await Promise.all([Site.load('projects/' + id + '/log.md'), Site.load('projects/' + id + '/overview.md')]);
+    if (!log) return;
+    const name = (ov && (ov.match(/^#\s+(.+)$/m) || [])[1]) || id;
+    Site.parseLog(log).forEach((e, i) => { if (/^\d{4}-\d{2}-\d{2}$/.test(e.date)) all.push({ ...e, id, name, i }); });
+  }));
+  if (!all.length){ box.innerHTML = '<div class="li-empty">No entries yet.</div>'; return; }
+  all.sort((a, b) => b.date.localeCompare(a.date) || a.i - b.i);
+  const e = all[0];
+  const a = document.createElement('a'); a.className = 'latest';
+  a.href = 'project.html?p=' + encodeURIComponent(e.id) + '&view=log#e' + (e.i + 1);
+  const img = (e.body.match(/!\[[^\]]*\]\(([^)\s]+)\)/) || [])[1];
+  if (img){ const im = document.createElement('img'); im.alt = ''; im.loading = 'lazy'; im.src = /^(https?:|\/)/.test(img) ? img : 'projects/' + e.id + '/' + img; a.append(im); }
+  const lb = document.createElement('div'); lb.className = 'lb';
+  const lm = document.createElement('div'); lm.className = 'lm'; lm.textContent = [Site.fmtDate(e.date), e.name, e.author].filter(Boolean).join(' · ');
+  const h = document.createElement('h3'); h.textContent = e.title;
+  const text = e.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/^\s*([-*]|\d+\.)\s+/gm, '').replace(/[#*_`>|]/g, ' ').replace(/\s+/g, ' ').trim();
+  const p = document.createElement('p'); p.textContent = text.length > 180 ? text.slice(0, 177).replace(/\s+\S*$/, '') + '…' : text;
+  const go = document.createElement('span'); go.className = 'go'; go.textContent = 'Read in the lab notebook →';
+  lb.append(lm, h); if (text) lb.append(p); lb.append(go); a.append(lb);
+  box.replaceChildren(a);
 })();
 
 /* scroll-spy for the section index */

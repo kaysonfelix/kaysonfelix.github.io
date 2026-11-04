@@ -128,6 +128,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     <div class="modes" role="tablist">
       <button type="button" role="tab" id="modeLog" aria-selected="true">New log entry</button>
       <button type="button" role="tab" id="modeOv" aria-selected="false">Edit overview</button>
+      <button type="button" role="tab" id="modeHome" aria-selected="false">Homepage</button>
     </div>
   </div>
 
@@ -204,6 +205,23 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <button class="primary" id="ovSave" type="button">Save overview</button>
       <button class="secondary" id="ovReload" type="button">Discard changes</button>
       <span class="msg" id="ovMsg" role="status"></span>
+    </div>
+  </section>
+
+  <!-- ===================== HOMEPAGE: featured LinkedIn post ===================== -->
+  <section class="card" id="homeCard" hidden>
+    <h2>Latest LinkedIn post</h2>
+    <p>On LinkedIn, open your post, tap <b>⋯ → Embed this post</b>, copy the code, and paste it here. A link to the post also works.</p>
+    <div class="field" style="margin-top:16px">
+      <label for="liIn">Embed code or post link</label>
+      <textarea id="liIn" style="min-height:90px;font:14px/1.5 var(--mono)" placeholder='<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:…'></textarea>
+      <p class="hint" id="liParsed"></p>
+    </div>
+    <div id="liPrev" style="margin-top:14px"></div>
+    <div class="pub">
+      <button class="primary" id="liSave" type="button">Save to homepage</button>
+      <button class="secondary" id="liClear" type="button">Remove post</button>
+      <span class="msg" id="liMsg" role="status"></span>
     </div>
   </section>
 
@@ -413,10 +431,56 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 
   /* ---------- modes ---------- */
   function setMode(m){
-    $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov');
-    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov';
+    $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov'); $('modeHome').setAttribute('aria-selected', m === 'home');
+    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov'; $('homeCard').hidden = m !== 'home';
+    document.querySelector('.projbar').hidden = m === 'home';
     if (m === 'ov' && !ov.loadedFor) loadOverview();
+    if (m === 'home' && !home.loaded) loadHome();
   }
+  $('modeHome').onclick = () => setMode('home');
+
+  /* ---------- homepage: featured LinkedIn post ---------- */
+  const home = { loaded: false, sha: null };
+  function liEmbed(raw){
+    raw = (raw || '').trim(); if (!raw) return '';
+    const src = (raw.match(/src=["']([^"']+)["']/) || [])[1] || raw;
+    let m = src.match(/urn:li:(share|ugcPost|activity):(\d+)/) || src.match(/urn%3Ali%3A(share|ugcPost|activity)%3A(\d+)/);
+    if (m) return `https://www.linkedin.com/embed/feed/update/urn:li:${m[1]}:${m[2]}`;
+    m = src.match(/activity-(\d{15,})/) || src.match(/ugcPost-(\d{15,})/);
+    if (m) return `https://www.linkedin.com/embed/feed/update/urn:li:${/ugcPost/.test(src) ? 'ugcPost' : 'activity'}:${m[1]}`;
+    return null;
+  }
+  window.__liEmbed = liEmbed;
+  function liShow(){
+    const u = liEmbed($('liIn').value), prev = $('liPrev');
+    prev.innerHTML = '';
+    if (u === null){ $('liParsed').textContent = "That doesn't look like a LinkedIn post link or embed code."; return; }
+    $('liParsed').textContent = u ? 'Post found.' : '';
+    if (u){ const f = document.createElement('iframe'); f.src = u; f.title = 'Preview'; f.style.cssText = 'width:100%;max-width:504px;height:480px;border:1px solid var(--border);border-radius:10px'; prev.append(f); }
+  }
+  $('liIn').addEventListener('input', liShow);
+  async function loadHome(){
+    home.loaded = true;
+    try { const f = await gh(`/repos/${REPO}/contents/featured.json?ref=${BRANCH}`); home.sha = f.sha; const j = JSON.parse(unb64(f.content)); $('liIn').value = j.linkedin || ''; }
+    catch (e){ home.sha = null; }
+    liShow();
+  }
+  async function saveHome(value){
+    const out = $('liMsg');
+    $('liSave').disabled = true; msg(out, 'Saving…');
+    try {
+      let cur = {};
+      try { const f = await gh(`/repos/${REPO}/contents/featured.json?ref=${BRANCH}`); home.sha = f.sha; cur = JSON.parse(unb64(f.content)); } catch (e){ home.sha = null; }
+      cur.linkedin = value;
+      const r = await gh(`/repos/${REPO}/contents/featured.json`, { method: 'PUT', body: JSON.stringify({ message: `Homepage: LinkedIn post (${user.login})`, content: b64(JSON.stringify(cur, null, 2) + '\n'), branch: BRANCH, ...(home.sha ? { sha: home.sha } : {}) }) });
+      home.sha = r.content.sha;
+      msg(out, value ? 'Saved. The homepage shows this post in about a minute.' : 'Removed. The homepage shows "First post coming soon".', 'ok');
+    } catch (e){
+      msg(out, (e.status === 403 || /not accessible/i.test(e.message)) ? "Your token can't change the site. Owner: token Contents must be 'Read and write'. Collaborator: use a classic token with public_repo." : 'Could not save: ' + e.message, 'err');
+    } finally { $('liSave').disabled = false; }
+  }
+  $('liSave').onclick = () => { const u = liEmbed($('liIn').value); if (!u) return msg($('liMsg'), 'Paste a LinkedIn embed code or post link first.', 'err'); saveHome(u); };
+  $('liClear').onclick = () => { $('liIn').value = ''; liShow(); saveHome(''); };
   $('modeLog').onclick = () => setMode('log');
   $('modeOv').onclick = () => {
     if (!$('ovCard').hidden) return;

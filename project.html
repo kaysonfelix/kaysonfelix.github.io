@@ -100,6 +100,7 @@
       col.append(h, md); art.append(time, col); list.append(art);
     }
     content.replaceChildren(list);
+    if (location.hash){ const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
   }
 })();
 </script>
