@@ -5,27 +5,42 @@ Everything is done on github.com. No code needed for project updates.
 ## Folder layout
 
 ```
-index.html          ← homepage (name, links, project cards, other sections)
+index.html          ← homepage (everything: name, links, projects, experience, involvement, background)
+admin.html          ← lab notebook editor (post entries without touching files)
 project.html        ← project page template (don't edit)
-style.css           ← colors and fonts
+style.css           ← colors and fonts for the project pages and editor
 site.js             ← helper code (don't edit)
 .nojekyll           ← keep this; it tells GitHub to serve files as-is
 projects/
   project-1/
     overview.md     ← "Overview" tab
     log.md          ← "Lab notebook" tab
+    bom.xlsx        ← bill of materials spreadsheet (shown on the Overview)
     images/         ← photos for this project
-  project-2/ ...
-  project-3/ ...
 ```
 
-## Post a lab notebook update
+## Post a lab notebook update (easy way)
+
+Open **kaysonfelix.github.io/admin.html**, sign in once, fill in the form and press
+**Publish entry**. Photos are resized automatically. The entry is live in about a minute.
+
+### Give someone posting access
+1. Repo **Settings → Collaborators → Add people**, enter their GitHub username. They accept the invite.
+2. They create a token: GitHub **Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens → Generate new token**. Repository access: only this site repo.
+   Permissions: **Contents → Read and write**. Copy the token.
+3. They open admin.html and paste the token. It's remembered in that browser until they sign out.
+
+Remove access any time from **Settings → Collaborators**. Every post is a commit, so the
+history shows who posted what, and any change can be undone.
+
+## Post a lab notebook update (by editing the file)
 
 1. Open `projects/<your-project>/log.md` on GitHub and tap the pencil icon.
 2. At the top (under the grey comment), add:
 
    ```
-   ## 2026-11-03 | Aligned the beacon and got first lock
+   ## 2026-11-03 | Aligned the beacon and got first lock | Kayson
 
    What you did, what happened, what you learned.
 
@@ -49,12 +64,57 @@ File names: lowercase, no spaces (`2026-11-03-quad.jpg`, not `IMG 4412.JPG`).
 
 The folder name shows up in links (`project.html?p=pat-terminal`), so pick something
 short like `pat-terminal`. If you rename `project-1`, also change `project-1` in its
-card in `index.html` (three places: `data-project` and the two button links).
+card in `index.html` (in `data-project`, `data-href` and the two button links).
 
 ## Add a new project
 
-1. In `index.html`, copy one `<article class="project" ...>` block and change the folder name.
-2. Create `projects/<new-name>/overview.md` and `log.md` (copy them from another project).
+1. In `index.html`, find the "In planning" placeholder (`<article class="card tba">`)
+   and replace it with a copy of the full project card above it. Change the folder name,
+   title, status, tags and description.
+2. Create `projects/<new-name>/overview.md` and `log.md` (copy them from project-1).
+3. The editor (admin.html) picks up the new folder automatically.
+
+## Project card photo
+
+Put a photo in `media/` (e.g. `media/pat.jpg`), then in `index.html` replace
+`<div class="media">photo coming soon</div>` with
+`<div class="media"><img src="media/pat.jpg" alt="PAT system on the bench"></div>`.
+
+## Add coursework
+
+In `index.html`, find `<ul class="courses" id="courses">` and add one line per course:
+
+```html
+<li><code>PHY 2048</code><span>Physics I</span></li>
+```
+
+The first 5 show; the rest fold under "Show all". Put the most relevant courses first.
+
+## Add a logo to the row under your name
+
+Put the image in `media/` and add a line inside `<ul class="logos">`:
+
+```html
+<li><img src="media/solidworks.png" alt="SolidWorks" title="SolidWorks"></li>
+```
+
+## Print CV
+
+The "Print CV" button opens the print / Save as PDF dialog. The printout is a one-page CV:
+all courses show; buttons, photos and logos are hidden.
+
+## Update the bill of materials
+
+1. Open `bom.xlsx` in Excel (download it from the project folder on GitHub).
+2. Fill in Part, Description, Qty, Unit cost and Supplier link. Total cost and the
+   Total row calculate themselves. Save.
+3. On GitHub, open the project folder, **Add file → Upload files**, drop in `bom.xlsx`
+   (same name, it replaces the old one), and commit.
+
+The Overview page reads the spreadsheet and shows it as a table with a download link.
+Only the first sheet is shown. A `.csv` file works too: in `overview.md`, change
+`{{sheet: bom.xlsx}}` to `{{sheet: bom.csv}}`. You can embed any spreadsheet this way,
+in any project or log entry, with `{{sheet: filename.xlsx}}` on its own line.
 
 ## Markdown cheat sheet
 

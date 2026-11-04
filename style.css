@@ -161,3 +161,17 @@
   .log-entry .md{max-width:80ch}
   @media (max-width:900px){ .pgrid{grid-template-columns:1fr} .side{display:none} }
   @media (max-width:600px){ .log-entry{grid-template-columns:1fr} }
+
+  /* spreadsheets embedded from {{sheet: file.xlsx}} */
+  .sheet{margin-top:14px}
+  .sheet-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:6px}
+  .md .sheet table{display:table;width:100%;border-collapse:collapse;font-size:15px}
+  .md .sheet th,.md .sheet td{border:0;border-bottom:1px solid var(--border);padding:7px 12px;text-align:left;white-space:nowrap}
+  .md .sheet th{background:var(--row);font:500 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .md .sheet th.num{text-align:right}
+  .md .sheet td.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:13.5px}
+  .md .sheet tr:last-child td{border-bottom:0}
+  .md .sheet tr.total td{font-weight:700;background:var(--row);border-top:1px solid var(--border)}
+  .sheet-dl{display:inline-block;margin-top:8px;font:13px var(--mono)}
+
+  .log-entry time .by{color:var(--fg)}

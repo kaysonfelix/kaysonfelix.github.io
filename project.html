@@ -94,6 +94,7 @@
       const time = document.createElement('time'); time.textContent = Site.fmtDate(e.date); if (e.date) time.dateTime = e.date;
       const col = document.createElement('div'); col.style.minWidth = '0';
       const h = document.createElement('h2'); h.textContent = e.title;
+      if (e.author){ const by = document.createElement('span'); by.className = 'by'; by.textContent = e.author; time.append(document.createElement('br'), by); }
       const md = document.createElement('div'); md.className = 'md';
       Site.render(e.body, base, md);
       col.append(h, md); art.append(time, col); list.append(art);

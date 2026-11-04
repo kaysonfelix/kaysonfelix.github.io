@@ -3,291 +3,513 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>[Your Name]</title>
-<meta name="description" content="[One sentence about you for search results]">
+<title>Kayson Felix-Davila</title>
+<meta name="description" content="Kayson Felix-Davila, Photonics Science &amp; Engineering student at the University of Central Florida.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Redaction:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="layout.css">
+<style>
+/* Layout: identity panel pinned on the left, work scrolls on the right.
+   Recruiters always see who you are and how to reach you; content is scanned top to bottom. */
+:root{
+  --bg:#ffffff;
+  --panel:#f6f8fa;
+  --fg:#1f2328;
+  --muted:#59636e;
+  --faint:#8c959f;
+  --border:#d8dee4;
+  --link:#0969da;
+  --chip:#eef2f6;
+  --ok:#1a7f37; --ok-bg:#dafbe1; --ok-bd:#4ac26b;
+  --serif:"Redaction",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --spectrum:linear-gradient(90deg,#610061 0.0%,#79008d 2.7%,#8300b5 5.4%,#7e00db 8.1%,#6a00ff 10.8%,#3d00ff 13.5%,#0000ff 16.2%,#0046ff 18.9%,#007bff 21.6%,#00a9ff 24.3%,#00d5ff 27.0%,#00ffff 29.7%,#00ff92 32.4%,#00ff00 35.1%,#36ff00 37.8%,#5eff00 40.5%,#81ff00 43.2%,#a3ff00 45.9%,#c3ff00 48.6%,#e1ff00 51.4%,#ffff00 54.1%,#ffdf00 56.8%,#ffbe00 59.5%,#ff9b00 62.2%,#ff7700 64.9%,#ff4f00 67.6%,#ff2100 70.3%,#ff0000 73.0%,#ff0000 75.7%,#ff0000 78.4%,#ff0000 81.1%,#ff0000 83.8%,#ff0000 86.5%,#e20000 89.2%,#c40000 91.9%,#a50000 94.6%,#840000 97.3%,#610000 100.0%);
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:4px}
+h1,h2,h3{text-wrap:balance}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important} }
+
+.shell{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:380px minmax(0,1fr);gap:72px;
+  padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+
+.shell > *{min-width:0}
+
+/* ---------- identity panel ---------- */
+.id{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding-block:56px 32px;overflow:auto}
+/* visible-spectrum ruler, 380–750 nm, with a readout under the pointer */
+.specbar{position:relative;margin-bottom:30px;padding-bottom:16px;cursor:crosshair;max-width:300px;touch-action:none}
+.specbar .band{height:6px;border-radius:3px;background:var(--spectrum)}
+.specbar .ticks{position:relative;height:5px}
+.specbar .ticks i{position:absolute;top:0;width:1px;height:5px;background:var(--faint)}
+.specbar .lbl{position:absolute;top:13px;transform:translateX(-50%);font:10px var(--mono);color:var(--faint);font-variant-numeric:tabular-nums}
+.specbar .unit{position:absolute;right:0;top:13px;font:10px var(--mono);color:var(--faint)}
+.specbar .mk{position:absolute;top:-4px;width:1px;height:14px;background:var(--fg);opacity:0;transition:opacity .15s}
+.specbar .read{position:absolute;bottom:100%;margin-bottom:6px;transform:translateX(-50%);font:500 11px var(--mono);color:var(--fg);background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:1px 6px;white-space:nowrap;opacity:0;transition:opacity .15s;pointer-events:none}
+.specbar.active .mk,.specbar.active .read{opacity:1}
+.id h1{font-size:2.5rem;line-height:1.05;letter-spacing:-.015em}
+.id .deg{color:var(--muted);font-style:italic;margin-top:10px;line-height:1.45}
+.id .tag{margin-top:14px;font:500 13px var(--mono);color:var(--fg)}
+.id .about{margin-top:18px;color:#3d444d;max-width:34ch}
+
+.cta{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 13px var(--mono);padding:9px 14px;border-radius:8px;border:1px solid var(--border);color:var(--fg);background:var(--bg);cursor:pointer;transition:border-color .15s,background .15s}
+.btn:hover{text-decoration:none;border-color:var(--fg)}
+.btn svg{width:15px;height:15px;fill:currentColor}
+.btn.primary{background:var(--fg);color:#fff;border-color:var(--fg)}
+.btn.primary:hover{background:#000}
+.socials{display:flex;gap:6px;margin-top:14px}
+.socials a{display:grid;place-items:center;width:36px;height:36px;border-radius:8px;color:var(--muted);border:1px solid transparent}
+.socials a:hover{color:var(--fg);border-color:var(--border);text-decoration:none}
+.socials svg{width:17px;height:17px;fill:currentColor}
+
+/* section index with scroll-spy */
+.index{list-style:none;margin-top:36px;display:grid;gap:2px}
+.index a{display:flex;align-items:center;gap:12px;font:13px var(--mono);color:var(--faint);padding:5px 0;text-transform:uppercase;letter-spacing:.08em}
+.index a::before{content:"";height:1px;width:22px;background:var(--border);transition:width .2s,background .2s}
+.index a:hover{color:var(--fg);text-decoration:none}
+.index a:hover::before{width:36px;background:var(--fg)}
+.index a.on{color:var(--fg)}
+.index a.on::before{width:52px;height:2px;background:var(--spectrum)}
+
+.logos{list-style:none;display:flex;align-items:center;gap:22px;margin-top:auto;padding-top:28px}
+.logos img{height:28px;width:auto;display:block;opacity:.9}
+.logos img[src*="spie"]{height:18px}
+
+/* ---------- content ---------- */
+main{padding-block:56px 96px;min-width:0}
+section{padding-bottom:64px}
+.sh{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.sh h2{font-size:1.5rem;line-height:1.2}
+.sh .n{font:12px var(--mono);color:var(--faint)}
+.sh .rule{flex:1;height:1px;background:var(--border);align-self:center}
+
+/* projects: hover / focus reveals the description */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:18px}
+.card{position:relative;height:420px;max-width:100%;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--panel);isolation:isolate}
+.card .media{position:absolute;inset:0;background:linear-gradient(160deg,#eef2f6,#e3e8ee);display:grid;place-items:center;color:var(--faint);font:12px var(--mono)}
+.card .media img{width:100%;height:100%;object-fit:cover}
+.card .face{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(to top,rgba(255,255,255,.98) 60%,rgba(255,255,255,.88));
+  border-top:1px solid var(--border);transform:translateY(calc(100% - var(--peek,82px)));transition:transform .35s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;gap:10px}
+.card .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card .face > :not(.head):not(.chips){opacity:0;transition:opacity .25s .05s}
+.card:hover .face > :not(.head):not(.chips),.card:focus-within .face > :not(.head):not(.chips){opacity:1}
+.card h3{font-size:1.15rem;line-height:1.25}
+.pill{font:500 11px var(--mono);border-radius:999px;padding:2px 9px;border:1px solid var(--border);color:var(--muted);white-space:nowrap}
+.pill.live{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-bd)}
+.pill.live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);margin-right:6px;vertical-align:1px}
+.card .hint{position:absolute;right:12px;top:12px;font:11px var(--mono);color:var(--muted);background:rgba(255,255,255,.85);border:1px solid var(--border);border-radius:999px;padding:2px 9px;transition:opacity .2s}
+.card p{font-size:15px;line-height:1.5;color:#3d444d}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font:12px var(--mono);background:var(--chip);color:#3d444d;border-radius:6px;padding:2px 8px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.acts a{display:flex;align-items:center;justify-content:center;gap:7px;font:500 13px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--border);color:var(--fg);background:var(--bg)}
+.acts a:hover{border-color:var(--fg);text-decoration:none}
+.acts svg{width:14px;height:14px;fill:currentColor}
+.card:hover .face,.card:focus-within .face,.card.demo .face{transform:none}
+.card.demo .face > :not(.head):not(.chips){opacity:1}
+.card.demo .hint{opacity:0}
+.card[data-href]{cursor:pointer}
+.card[data-href]:hover{border-color:#afb8c1}
+.card:hover .hint,.card:focus-within .hint{opacity:0}
+/* touch screens have no hover: show everything */
+@media (hover:none), (pointer:coarse){ .card .face > :not(.head):not(.chips){opacity:1} .card{height:auto} .card .media{position:relative;height:200px} .card .face{position:relative;transform:none;background:var(--bg)} .card .hint{display:none} }
+
+.card.tba{border-style:dashed;background:transparent;display:grid;place-content:center;justify-items:center;gap:6px;text-align:center}
+.card.tba .pill{text-transform:uppercase;letter-spacing:.1em}
+.card.tba p{font:13px var(--mono);color:var(--faint)}
+@media (hover:none), (pointer:coarse){ .card.tba{min-height:150px} }
+
+/* timeline */
+.tl{list-style:none;position:relative}
+.tl > li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 28px;padding:0 0 26px}
+.tl time{font:12px/1.9 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.tl .body{position:relative;padding-left:22px;border-left:1px solid var(--border)}
+.tl .body::before{content:"";position:absolute;left:-5px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--fg)}
+.tl > li:last-child .body{border-left-color:transparent}
+.tl h3{font-size:1.08rem;line-height:1.3}
+.tl .org{color:var(--muted);font-style:italic;font-size:15px}
+.tl ul{margin:6px 0 0 18px;font-size:15.5px;color:#3d444d}
+.tl li li{margin-top:2px}
+@media (max-width:640px){ .tl > li{grid-template-columns:1fr} .tl time{padding-left:22px} }
+
+/* involvement: compact rows with logos */
+.inv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.inv article{border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:start}
+.inv .mark{grid-row:span 2;width:44px;height:44px;border-radius:10px;background:var(--panel);display:grid;place-items:center;overflow:hidden}
+.inv .mark img{max-width:34px;max-height:26px}
+.inv .mark span{font:500 11px var(--mono);color:var(--muted)}
+.inv h3{font-size:1.02rem;line-height:1.3}
+.inv .org{color:var(--muted);font-size:14.5px}
+.inv ul{grid-column:1 / -1;margin:8px 0 0 18px;font-size:15px;color:#3d444d}
+
+/* education + skills + coursework: one compact strip */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:34px 48px}
+.facts h3{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.edu p{line-height:1.45}
+.edu p + p{margin-top:12px}
+.edu .sub{display:block;color:var(--muted);font-size:15px;font-style:italic}
+.skills{display:grid;gap:12px}
+.skills div{display:grid;gap:6px}
+.skills b{font:12px var(--mono);color:var(--faint);font-weight:400}
+.courses{list-style:none;display:grid;gap:7px;font-size:15.5px}
+.courses li{display:grid;grid-template-columns:80px 1fr;gap:10px}
+.courses code{font:12px/1.9 var(--mono);color:var(--muted)}
+.courses li.more{display:none}
+.courses.all li.more{display:grid}
+.linkbtn{margin-top:10px;font:500 13px var(--mono);color:var(--link);background:none;border:0;cursor:pointer;padding:2px 0}
+.linkbtn:hover{text-decoration:underline}
+
+footer{border-top:1px solid var(--border);padding-top:18px;color:var(--faint);font:12px var(--mono)}
+
+/* ---------- small screens: panel becomes a hero, index becomes a sticky bar ---------- */
+@media (max-width:980px){
+  .shell{grid-template-columns:1fr;gap:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .id{position:relative;height:auto;padding-block:36px 8px;overflow:visible}
+  .id .about{max-width:60ch}
+  .index{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:4px;overflow-x:auto;margin:22px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0;padding:10px max(16px,env(safe-area-inset-left,0px));background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-block:1px solid var(--border);scrollbar-width:none}
+  .index::-webkit-scrollbar{display:none}
+  .index a{padding:6px 10px;border-radius:6px;white-space:nowrap}
+  .index a::before{display:none}
+  .index a.on{background:var(--panel)}
+  .logos{margin-top:24px;padding-top:0}
+  main{padding-top:36px}
+}
+
+/* print preview (chat only) */
+.preview-bar{position:sticky;top:0;z-index:40;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;padding:10px 16px;background:#1f2328;color:#fff;font:13px var(--mono)}
+.preview-bar button{font:inherit;color:#1f2328;background:#fff;border:0;border-radius:6px;padding:5px 12px;cursor:pointer}
+.preview-bar button + button{background:transparent;color:#fff;border:1px solid #59636e}
+
+/* ---------- Print CV: one page ---------- */
+@page{size:letter;margin:.5in}
+@media print{   *{transition:none!important;opacity:1!important}
+  body{font-size:9.5pt;line-height:1.32;background:#fff}
+  .preview-bar, .cta, .socials, .index, .logos, .hint, .acts, .card.tba, .linkbtn, footer, .card .media, .specbar, .inv .mark{display:none!important}
+  .shell{display:block;max-width:none;padding:0}
+  .id{position:static;height:auto;padding:0 0 8px;overflow:visible;display:grid;grid-template-columns:1.1fr 1fr;column-gap:24px;border-bottom:2px solid #1f2328}
+  .id h1{font-size:19pt;grid-column:1}
+  .id h1 br{display:none}
+  .id .deg{margin-top:2px;grid-column:1}
+  .id .tag{margin-top:4px;font-size:8.5pt;grid-column:1}
+  .id .about{grid-column:2;grid-row:1 / span 3;margin:0;max-width:none;font-size:9pt;align-self:center}
+  main{padding:4px 0 0}
+  section{padding-bottom:4px;break-inside:avoid}
+  .sh{margin:6px 0 3px}
+  .sh h2{font-size:10.5pt;text-transform:uppercase;letter-spacing:.08em}
+  .grid{display:block}
+  .card{height:auto;border:0;border-radius:0;background:none;overflow:visible}
+  .card .face{position:static;transform:none;background:none;border:0;padding:0;gap:2px}
+  .card .head{min-height:0}
+  .card h3{font-size:10pt}
+  .card p{font-size:9pt}
+  .chips span{font-size:7.5pt;padding:0 6px;background:none;border:1px solid #d8dee4}
+  .tl > li{grid-template-columns:96px 1fr;padding-bottom:4px;column-gap:12px}
+  .tl .body{border-left:0;padding-left:0}
+  .tl .body::before{display:none}
+  .tl time{font-size:8pt;padding-left:0}
+  .tl h3, .inv h3{font-size:10pt}
+  .tl .org, .inv .org{font-size:9pt}
+  .tl ul, .inv ul{font-size:9pt;margin-top:1px}
+  .inv{grid-template-columns:1fr 1fr;gap:2px 24px}
+  .inv article{border:0;padding:1px 0;display:block}
+  .facts{grid-template-columns:1.2fr 1fr 1fr;gap:16px}
+  .facts h3{font-size:8pt;margin-bottom:3px}
+  .edu p{font-size:9pt}
+  .edu p + p{margin-top:5px}
+  .edu .sub{font-size:8.5pt}
+  .skills{gap:4px}
+  .courses{gap:0;font-size:8.5pt}
+  .courses li.more{display:grid}
+  .courses li{grid-template-columns:58px 1fr}
+  .courses code{font-size:7.5pt}
+ }
+  html.print-preview *{transition:none!important;opacity:1!important}
+  html.print-preview body{font-size:9.5pt;line-height:1.32;background:#fff}
+  html.print-preview .cta, html.print-preview .socials, html.print-preview .index, html.print-preview .logos, html.print-preview .hint, html.print-preview .acts, html.print-preview .card.tba, html.print-preview .linkbtn, html.print-preview footer, html.print-preview .card .media, html.print-preview .specbar, html.print-preview .inv .mark{display:none!important}
+  html.print-preview .shell{display:block;max-width:none;padding:0}
+  html.print-preview .id{position:static;height:auto;padding:0 0 8px;overflow:visible;display:grid;grid-template-columns:1.1fr 1fr;column-gap:24px;border-bottom:2px solid #1f2328}
+  html.print-preview .id h1{font-size:19pt;grid-column:1}
+  html.print-preview .id h1 br{display:none}
+  html.print-preview .id .deg{margin-top:2px;grid-column:1}
+  html.print-preview .id .tag{margin-top:4px;font-size:8.5pt;grid-column:1}
+  html.print-preview .id .about{grid-column:2;grid-row:1 / span 3;margin:0;max-width:none;font-size:9pt;align-self:center}
+  html.print-preview main{padding:4px 0 0}
+  html.print-preview section{padding-bottom:4px;break-inside:avoid}
+  html.print-preview .sh{margin:6px 0 3px}
+  html.print-preview .sh h2{font-size:10.5pt;text-transform:uppercase;letter-spacing:.08em}
+  html.print-preview .grid{display:block}
+  html.print-preview .card{height:auto;border:0;border-radius:0;background:none;overflow:visible}
+  html.print-preview .card .face{position:static;transform:none;background:none;border:0;padding:0;gap:2px}
+  html.print-preview .card .head{min-height:0}
+  html.print-preview .card h3{font-size:10pt}
+  html.print-preview .card p{font-size:9pt}
+  html.print-preview .chips span{font-size:7.5pt;padding:0 6px;background:none;border:1px solid #d8dee4}
+  html.print-preview .tl > li{grid-template-columns:96px 1fr;padding-bottom:4px;column-gap:12px}
+  html.print-preview .tl .body{border-left:0;padding-left:0}
+  html.print-preview .tl .body::before{display:none}
+  html.print-preview .tl time{font-size:8pt;padding-left:0}
+  html.print-preview .tl h3, html.print-preview .inv h3{font-size:10pt}
+  html.print-preview .tl .org, html.print-preview .inv .org{font-size:9pt}
+  html.print-preview .tl ul, html.print-preview .inv ul{font-size:9pt;margin-top:1px}
+  html.print-preview .inv{grid-template-columns:1fr 1fr;gap:2px 24px}
+  html.print-preview .inv article{border:0;padding:1px 0;display:block}
+  html.print-preview .facts{grid-template-columns:1.2fr 1fr 1fr;gap:16px}
+  html.print-preview .facts h3{font-size:8pt;margin-bottom:3px}
+  html.print-preview .edu p{font-size:9pt}
+  html.print-preview .edu p + p{margin-top:5px}
+  html.print-preview .edu .sub{font-size:8.5pt}
+  html.print-preview .skills{gap:4px}
+  html.print-preview .courses{gap:0;font-size:8.5pt}
+  html.print-preview .courses li.more{display:grid}
+  html.print-preview .courses li{grid-template-columns:58px 1fr}
+  html.print-preview .courses code{font-size:7.5pt}
+  html.print-preview body{background:#d0d7de}
+  html.print-preview .shell{background:#fff;max-width:8.5in;margin:24px auto;padding:.5in;box-shadow:0 4px 24px rgba(0,0,0,.15)}
+
+</style>
 </head>
 <body>
-
-<!-- ===================== TOP BAR ===================== -->
-<div class="topbar">
-  <div class="topbar-in">
-    <a class="tb-name" href="#top">[Your Name]</a>
-    <nav class="tb-nav" aria-label="Sections">
-      <a href="#projects-sec">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#coursework">Coursework</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button type="button" class="tb-print" id="printBtn">Print CV</button>
-  </div>
-</div>
 <div class="preview-bar" id="previewBar" hidden><span>Print preview: this is how the page prints or saves as a PDF</span><button type="button" id="doPrint">Print / Save PDF</button><button type="button" id="exitPreview">Close preview</button></div>
 
-<div class="wrap" id="top">
+<div class="shell">
 
-  <!-- ===================== INTRO: you on the left, about on the right ===================== -->
-  <section class="intro">
-    <header class="who">
-      <!-- Replace with: <img class="photo" src="media/headshot.jpg" alt="Your Name"> -->
-      <div class="photo">photo</div>
-      <div>
-        <h1>[Your Name]</h1>
-        <p class="affil">[Major] · [University] · [Expected graduation]</p>
-        <p class="lede">[Two sentences: what you work on, and the kind of internship you're looking for.]</p>
-        <nav class="links" aria-label="Profiles">
-        <a href="resume.pdf"><svg viewBox="0 0 16 16"><path d="M2 1.75C2 .78 2.78 0 3.75 0h6.59c.46 0 .9.18 1.23.51l2.92 2.92c.33.33.51.77.51 1.23v9.59A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .14.11.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.06V4.25c0 .14.11.25.25.25h2.69Z"/></svg>Resume</a>
-        <a href="https://github.com/your-username" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>GitHub</a>
-        <a href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M13.6 0H2.4A2.4 2.4 0 0 0 0 2.4v11.2A2.4 2.4 0 0 0 2.4 16h11.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 13.6 0ZM4.9 13.3H2.6V6h2.3ZM3.75 5A1.33 1.33 0 1 1 5.1 3.67 1.33 1.33 0 0 1 3.75 5Zm9.55 8.3H11V9.75c0-.85 0-1.94-1.18-1.94S8.46 8.73 8.46 9.69v3.61H6.18V6h2.19v1h.03a2.4 2.4 0 0 1 2.16-1.19c2.31 0 2.74 1.52 2.74 3.5Z"/></svg>LinkedIn</a>
-        <a href="mailto:you@example.com"><svg viewBox="0 0 16 16"><path d="M1.75 2h12.5c.97 0 1.75.78 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.78.78 2 1.75 2ZM1.5 12.25c0 .14.11.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.33L8.53 8.9a.75.75 0 0 1-.94 0L1.5 5.33Zm13-8.18v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.95Z"/></svg>Email</a>
-      </nav>
-      </div>
-    </header>
-    <aside class="about" id="about">
-      <h2 class="label">About</h2>
-      <p>[A short paragraph: how you got into your field and what you want to work on.]</p>
-      <table class="kv">
-        <tr><td>Program</td><td>[ ]</td></tr>
-        <tr><td>Focus</td><td>[ ]</td></tr>
-        <tr><td>Seeking</td><td>[ ]</td></tr>
-      </table>
-    </aside>
-  </section>
+  <!-- ===================== IDENTITY PANEL (stays on screen) ===================== -->
+  <aside class="id">
+    <div class="specbar" id="specbar" aria-hidden="true" title="Visible spectrum, 380–750 nm"><div class="band"></div><div class="ticks"><i style="left:5.41%"></i><i style="left:18.92%"></i><i style="left:32.43%"></i><i style="left:45.95%"></i><i style="left:59.46%"></i><i style="left:72.97%"></i><i style="left:86.49%"></i></div><span class="lbl" style="left:5.41%">400</span><span class="lbl" style="left:32.43%">500</span><span class="lbl" style="left:59.46%">600</span><span class="lbl" style="left:86.49%">700</span><span class="unit">nm</span><span class="mk" id="mk"></span><span class="read" id="read">λ = 532 nm</span></div>
+    <h1>Kayson <br>Felix-Davila</h1>
+    <p class="deg">B.S. Photonics Science &amp; Engineering<br>Minor in Electrical Engineering · UCF · 2030</p>
+    <p class="tag">Freshman @ UCF | Optics &amp; Photonics Engineering Student</p>
+    <p class="about">I'm a first-year photonics student at UCF, minoring in electrical engineering. I'm looking for chances to learn from people who design and build optical systems.</p>
 
-  <div class="spectrum" aria-hidden="true">
-    <canvas id="spec"></canvas>
-    <div class="ends"><span>380 nm</span><span>750 nm</span></div>
-    <div class="mark" id="mark"><span id="lam">λ = 532 nm</span></div>
-  </div>
-
-  <!-- ===================== PROJECTS (full width) ===================== -->
-  <section class="block" id="projects-sec">
-    <div class="block-head">
-      <h2>Projects</h2>
-      <div class="scroll-nav">
-        <button type="button" class="arrow" data-dir="-1" aria-label="Scroll projects left">←</button>
-        <button type="button" class="arrow" data-dir="1" aria-label="Scroll projects right">→</button>
-      </div>
+    <div class="cta">
+      <a class="btn primary" href="resume.pdf"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M2 1.75C2 .78 2.78 0 3.75 0h6.59c.46 0 .9.18 1.23.51l2.92 2.92c.33.33.51.77.51 1.23v9.59A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .14.11.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.06V4.25c0 .14.11.25.25.25h2.69Z"/></svg>Resume</a>
+      <a class="btn" href="mailto:kaysonfelix789@gmail.com"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M1.75 2h12.5c.97 0 1.75.78 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.78.78 2 1.75 2ZM1.5 12.25c0 .14.11.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.33L8.53 8.9a.75.75 0 0 1-.94 0L1.5 5.33Zm13-8.18v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.95Z"/></svg>Email</a>
+      <button type="button" class="btn" id="printBtn">Print CV</button>
     </div>
-    <div class="projects" id="projects">
+    <div class="socials">
+      <a href="https://www.linkedin.com/in/kayson-felix-335b9043b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M13.6 0H2.4A2.4 2.4 0 0 0 0 2.4v11.2A2.4 2.4 0 0 0 2.4 16h11.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 13.6 0ZM4.9 13.3H2.6V6h2.3ZM3.75 5A1.33 1.33 0 1 1 5.1 3.67 1.33 1.33 0 0 1 3.75 5Zm9.55 8.3H11V9.75c0-.85 0-1.94-1.18-1.94S8.46 8.73 8.46 9.69v3.61H6.18V6h2.19v1h.03a2.4 2.4 0 0 1 2.16-1.19c2.31 0 2.74 1.52 2.74 3.5Z"/></svg></a>
+      <a href="https://github.com/kaysonfelix" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a>
+    </div>
 
-        <!-- Copy this <article> block for each project.
-             Set data-project to the project's folder name inside /projects (e.g. "pat-terminal"),
-             and use the same name in the two button links. -->
-        <article class="project" data-project="project-1">
-          <!-- Replace with: <div class="img"><img src="media/project1.jpg" alt="Short description"></div> -->
-          <div class="img">image</div>
-          <div class="info">
-            <div class="top"><h3>[Project title]</h3><span class="status">[Status]</span></div>
-            <p>[One or two sentences: what it does and why.]</p>
-            <div class="result"><span>Result:</span> [Your best number, e.g. a measured error or range]</div>
-            <div class="tags"><span>[tag]</span><span>[tag]</span><span>[tag]</span></div>
-            <div class="pmeta"></div>
-          </div>
-          <div class="pactions">
-            <a href="project.html?p=project-1"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 1.75C2 .78 2.78 0 3.75 0h6.59c.46 0 .9.18 1.23.51l2.92 2.92c.33.33.51.77.51 1.23v9.59A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .14.11.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.06V4.25c0 .14.11.25.25.25h2.69Z"/></svg><span>Overview</span><i aria-hidden="true">→</i></a>
-            <a href="project.html?p=project-1&amp;view=log"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.25c1.23 0 2.32.6 3 1.52A3.74 3.74 0 0 1 11 1h4.25a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.51a2.25 2.25 0 0 0-2.25 2.25.75.75 0 0 1-1.5 0A2.25 2.25 0 0 0 4.74 13H.75a.75.75 0 0 1-.75-.75Zm7.25 2.5A2.25 2.25 0 0 0 5 2.5H1.5v9h3.24c.95 0 1.83.3 2.51.81Zm1.5 9.06A3.74 3.74 0 0 1 11.25 11.5h3.25v-9H11a2.25 2.25 0 0 0-2.25 2.25Z"/></svg><span>Lab notebook</span><i aria-hidden="true">→</i></a>
+    <nav aria-label="Sections"><ul class="index">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#involvement">Involvement</a></li>
+      <li><a href="#background">Background</a></li>
+    </ul></nav>
+
+    <ul class="logos" aria-label="Affiliations">
+      <li><img src="media/ucf-seal.png" alt="University of Central Florida" title="University of Central Florida"></li>
+      <li><img src="media/spie.png" alt="SPIE" title="SPIE"></li>
+      <li><img src="media/asme.png" alt="ASME" title="American Society of Mechanical Engineers"></li>
+    </ul>
+  </aside>
+
+  <!-- ===================== CONTENT ===================== -->
+  <main>
+
+    <section id="projects">
+      <div class="sh"><h2>Projects</h2><span class="rule"></span></div>
+      <div class="grid">
+        <!-- Project card. Hovering slides the description up; on phones it is always shown. -->
+        <article class="card" data-project="project-1" data-href="project.html?p=project-1" tabindex="0" aria-label="PAT Laser Tracking System, open overview">
+          <!-- Replace with: <div class="media"><img src="media/pat.jpg" alt="PAT system on the bench"></div> -->
+          <div class="media">photo coming soon</div>
+          <span class="hint" aria-hidden="true">Hover for details</span>
+          <div class="face">
+            <div class="head"><h3>PAT Laser Tracking System</h3><span class="pill live">In progress</span></div>
+            <div class="chips"><span>beam steering</span><span>beacon tracking</span><span>closed-loop control</span><span>free-space optics</span></div>
+            <p>A bench-scale pointing, acquisition and tracking (PAT) system that locks a laser onto a moving light beacon with closed-loop control, modeled on the terminals used in satellite laser links.</p>
+            <div class="acts">
+              <a href="project.html?p=project-1"><svg aria-hidden="true" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 1.75C2 .78 2.78 0 3.75 0h6.59c.46 0 .9.18 1.23.51l2.92 2.92c.33.33.51.77.51 1.23v9.59A1.75 1.75 0 0 1 13.25 16h-9.5A1.75 1.75 0 0 1 2 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .14.11.25.25.25h9.5a.25.25 0 0 0 .25-.25V6h-2.75A1.75 1.75 0 0 1 9 4.25V1.5Zm6.75.06V4.25c0 .14.11.25.25.25h2.69Z"/></svg>Overview</a>
+              <a href="project.html?p=project-1&amp;view=log"><svg aria-hidden="true" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.25c1.23 0 2.32.6 3 1.52A3.74 3.74 0 0 1 11 1h4.25a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.51a2.25 2.25 0 0 0-2.25 2.25.75.75 0 0 1-1.5 0A2.25 2.25 0 0 0 4.74 13H.75a.75.75 0 0 1-.75-.75Zm7.25 2.5A2.25 2.25 0 0 0 5 2.5H1.5v9h3.24c.95 0 1.83.3 2.51.81Zm1.5 9.06A3.74 3.74 0 0 1 11.25 11.5h3.25v-9H11a2.25 2.25 0 0 0-2.25 2.25Z"/></svg>Lab notebook</a>
+            </div>
           </div>
         </article>
-
-
-        <!-- Placeholder: replace with a full project block (copy the one above) once you pick the project -->
-        <article class="project tba" aria-label="Next project, in planning">
-          <span class="tba-tag">In planning</span>
-          <p>Next project</p>
-        </article>
-        <!-- Placeholder: replace with a full project block (copy the one above) once you pick the project -->
-        <article class="project tba" aria-label="Next project, in planning">
-          <span class="tba-tag">In planning</span>
-          <p>Next project</p>
-        </article>
-
-    </div>
-  </section>
-
-  <!-- ===================== TWO COLUMNS: experience | sidebar ===================== -->
-  <div class="cols">
-    <section class="block main-col" id="experience">
-      <h2>Experience &amp; activities</h2>
-      <!-- Copy this block for each job, club, competition or research role -->
-      <div class="entry">
-        <h3>[Role]</h3><span class="when">[Start – End]</span>
-        <span class="where">[Organization]</span>
-        <ul><li>[What you did, with a number if you can]</li><li>[What you did]</li></ul>
-      </div>
-      <div class="entry">
-        <h3>[Role]</h3><span class="when">[Start – End]</span>
-        <span class="where">[Organization]</span>
-        <ul><li>[What you did]</li></ul>
+        <!-- Placeholder: replace with a full card (copy the one above) once you pick the project -->
+        <article class="card tba"><span class="pill">In planning</span><p>Next project</p></article>
       </div>
     </section>
 
-    <div class="side-col">
-      <section class="block" id="skills">
-        <h2>Skills</h2>
-        <table class="kv">
-          <tr><td>Languages</td><td>[ ]</td></tr>
-          <tr><td>Lab &amp; optics</td><td>[ ]</td></tr>
-          <tr><td>Software</td><td>[ ]</td></tr>
-        </table>
-      </section>
-      <section class="block" id="coursework">
-        <h2>Coursework</h2>
-        <!-- Add one <tr> row per course. Only the first 4 show; the rest fold under "Show all". -->
-        <table class="kv" id="courses">
-          <tr><td>[Code]</td><td>[Course name 1]</td></tr>
-          <tr><td>[Code]</td><td>[Course name 2]</td></tr>
-          <tr><td>[Code]</td><td>[Course name 3]</td></tr>
-          <tr><td>[Code]</td><td>[Course name 4]</td></tr>
-          <tr><td>[Code]</td><td>[Course name 5]</td></tr>
-          <tr><td>[Code]</td><td>[Course name 6]</td></tr>
-          <tr><td>[Code]</td><td>[Course name 7]</td></tr>
-        </table>
-      </section>
-      <section class="block" id="contact">
-        <h2>Contact</h2>
-        <table class="kv">
-          <tr><td>Email</td><td><code>[you@example.com]</code></td></tr>
-          <tr><td>LinkedIn</td><td><a href="https://www.linkedin.com/in/your-handle" target="_blank" rel="noopener">[linkedin.com/in/your-handle]</a></td></tr>
-          <tr><td>GitHub</td><td><a href="https://github.com/your-username" target="_blank" rel="noopener">[github.com/your-username]</a></td></tr>
-        </table>
-      </section>
-    </div>
-  </div>
+    <section id="experience">
+      <div class="sh"><h2>Experience</h2><span class="rule"></span></div>
+      <ol class="tl">
+        <li>
+          <time>Jan – Jun 2025</time>
+          <div class="body">
+            <h3>Door-to-Door Canvasser</h3>
+            <div class="org">Kenkay Solar · Orange City, FL</div>
+            <ul>
+              <li>Introduced solar products to residential customers and scheduled appointments</li>
+              <li>Qualified leads by identifying customer needs and gathering accurate information for senior sales staff</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <time>Jan – Mar 2026</time>
+          <div class="body">
+            <h3>Team Member / Grill</h3>
+            <div class="org">Steak n' Shake · Ormond Beach, FL</div>
+            <ul>
+              <li>Ran the grill during high-volume rushes while keeping quality consistent</li>
+              <li>Handled guest service and followed company and health-safety procedures</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
 
-  <footer>[Your Name] · Updated [Month Year]</footer>
+    <section id="involvement">
+      <div class="sh"><h2>Involvement</h2><span class="rule"></span></div>
+      <div class="inv">
+        <article>
+          <div class="mark"><img src="media/spie.png" alt=""></div>
+          <h3>Member, SPIE</h3><div class="org">UCF · optics and photonics society</div>
+        </article>
+        <article>
+          <div class="mark"><img src="media/asme.png" alt=""></div>
+          <h3>Member, ASME</h3><div class="org">UCF · American Society of Mechanical Engineers</div>
+        </article>
+        <article>
+          <div class="mark"><span>REC</span></div>
+          <h3>REC Aerial Drone Club</h3><div class="org">Member · 2 years</div>
+          <ul>
+            <li>Regional Champions in Autonomous Flight (2023)</li>
+            <li>REC Foundation Excellence Award for engineering documentation and team performance</li>
+            <li>Operated and troubleshot remotely piloted aerial systems in a pilot–spotter team</li>
+          </ul>
+        </article>
+        <article>
+          <div class="mark"><span>NHS</span></div>
+          <h3>National Honor Society</h3><div class="org">Member · 2 years · volunteer service</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="background">
+      <div class="sh"><h2>Background</h2><span class="rule"></span></div>
+      <div class="facts">
+        <div class="edu">
+          <h3>Education</h3>
+          <p><b>University of Central Florida</b><span class="sub">B.S. Photonics Science &amp; Engineering, minor in Electrical Engineering · expected 2030</span></p>
+          <p><b>Lake-Sumter State College</b><span class="sub">Associate in Arts · GPA 3.8 · dual enrollment, Health Sciences Collegiate Academy</span></p>
+        </div>
+        <div>
+          <h3>Skills</h3>
+          <div class="skills">
+            <div><b>Software</b><div class="chips"><span>SolidWorks (2D/3D CAD)</span><span>Microsoft Excel</span><span>Microsoft Office</span></div></div>
+            <div><b>Technical</b><div class="chips"><span>Hardware &amp; software troubleshooting</span><span>Remotely piloted aerial systems</span></div></div>
+          </div>
+        </div>
+        <div>
+          <h3>Coursework</h3>
+          <!-- Add one <li> per course. The first 5 show; the rest fold under "Show all". -->
+          <ul class="courses" id="courses">
+            <li><code>MAP 2302</code><span>Differential Equations</span></li>
+            <li><code>EGN 3310</code><span>Statics</span></li>
+            <li><code>EGN 3365</code><span>Properties and Structures of Materials</span></li>
+            <li><code>COP 2500</code><span>Concepts in Computer Science</span></li>
+            <li><code>LSSC</code><span>Calculus III</span></li>
+            <li><code>LSSC</code><span>Calculus II</span></li>
+            <li><code>LSSC</code><span>Calculus I</span></li>
+            <li><code>LSSC</code><span>Physics II</span></li>
+            <li><code>LSSC</code><span>Physics I</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>Kayson Felix-Davila · kaysonfelix789@gmail.com · Updated November 2026</footer>
+  </main>
 </div>
 
-<script>
-(() => {
-  const MIN = 380, MAX = 750;
-  const cvs = document.getElementById('spec'), ctx = cvs.getContext('2d');
-  const mark = document.getElementById('mark'), lam = document.getElementById('lam');
-
-  // approximate wavelength (nm) to sRGB, after Dan Bruton
-  function rgb(w){
-    let r = 0, g = 0, b = 0;
-    if (w < 440){ r = (440 - w) / 60; b = 1; }
-    else if (w < 490){ g = (w - 440) / 50; b = 1; }
-    else if (w < 510){ g = 1; b = (510 - w) / 20; }
-    else if (w < 580){ r = (w - 510) / 70; g = 1; }
-    else if (w < 645){ r = 1; g = (645 - w) / 65; }
-    else { r = 1; }
-    let f = 1;
-    if (w < 420) f = 0.3 + 0.7 * (w - 380) / 40;
-    else if (w > 700) f = 0.3 + 0.7 * (750 - w) / 50;
-    const c = v => Math.round(255 * Math.pow(v * f, 0.8));
-    return [c(r), c(g), c(b)];
-  }
-
-  function draw(){
-    const w = Math.max(1, Math.round(cvs.clientWidth * (window.devicePixelRatio || 1)));
-    cvs.width = w; cvs.height = 1;
-    const img = ctx.createImageData(w, 1);
-    for (let x = 0; x < w; x++){
-      const [r, g, b] = rgb(MIN + (MAX - MIN) * x / (w - 1 || 1));
-      img.data.set([r, g, b, 255], x * 4);
-    }
-    ctx.putImageData(img, 0, 0);
-  }
-
-  function show(clientX){
-    const r = cvs.getBoundingClientRect();
-    const t = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
-    mark.style.left = (t * 100) + '%';
-    lam.textContent = 'λ = ' + Math.round(MIN + (MAX - MIN) * t) + ' nm';
-    lam.style.transform = 'translateX(' + (-Math.min(100, Math.max(0, (t - 0.06) / 0.88 * 100))) + '%)';
-    lam.style.left = '0';
-    const edge = t < 0.12 || t > 0.88;
-    document.querySelector('.ends').style.visibility = edge ? 'hidden' : 'visible';
-  }
-
-  draw();
-  addEventListener('resize', draw);
-  addEventListener('pointermove', e => show(e.clientX));
-  addEventListener('pointerdown', e => show(e.clientX));
-  // start at 532 nm, the common green laser line
-  const start = () => { const r = cvs.getBoundingClientRect(); show(r.left + r.width * (532 - MIN) / (MAX - MIN)); };
-  start(); requestAnimationFrame(start); addEventListener('load', start);
-})();
-</script>
-<script>
-/* project scroller arrows */
-(() => {
-  const row = document.getElementById('projects');
-  const btns = document.querySelectorAll('.arrow');
-  const step = () => { const c = row.querySelector('.project'); return c ? c.getBoundingClientRect().width + 16 : 300; };
-  btns.forEach(b => b.addEventListener('click', () => row.scrollBy({ left: step() * +b.dataset.dir, behavior: 'smooth' })));
-  const update = () => {
-    btns[0].disabled = row.scrollLeft < 4;
-    btns[1].disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 4;
-    document.querySelector('.scroll-nav').hidden = row.scrollWidth <= row.clientWidth + 4;
-  };
-  row.addEventListener('scroll', update, { passive: true });
-  addEventListener('resize', update);
-  update();
-})();
-</script>
 <script src="site.js"></script>
 <script>
-/* fills in "N entries · last updated ..." on each project card from its log.md */
-document.querySelectorAll('.project[data-project]').forEach(async card => {
-  const log = await Site.load('projects/' + card.dataset.project + '/log.md');
-  if (!log) return;
-  const e = Site.parseLog(log).filter(x => /^\d{4}-\d{2}-\d{2}$/.test(x.date));
-  if (!e.length) return;
-  const latest = e[0];
-  card.querySelector('.pmeta').textContent = e.length + (e.length === 1 ? ' log entry' : ' log entries') + (latest ? ' · last updated ' + Site.fmtDate(latest.date) : '');
-});
+/* spectrum ruler: show the wavelength under the pointer */
+(() => {
+  const bar = document.getElementById('specbar'), mk = document.getElementById('mk'), rd = document.getElementById('read');
+  const show = x => {
+    const r = bar.getBoundingClientRect(), u = Math.min(1, Math.max(0, (x - r.left) / r.width));
+    mk.style.left = rd.style.left = (u * 100) + '%';
+    rd.textContent = 'λ = ' + Math.round(380 + 370 * u) + ' nm';
+    bar.classList.add('active');
+  };
+  bar.addEventListener('pointermove', e => show(e.clientX));
+  bar.addEventListener('pointerdown', e => show(e.clientX));
+  bar.addEventListener('pointerleave', () => bar.classList.remove('active'));
+})();
 </script>
 <script>
-/* top bar: highlight the section you're reading */
+/* project cards: the resting card shows title, status and tags; size the peek to fit them */
 (() => {
-  const links = [...document.querySelectorAll('.tb-nav a')];
-  const secs = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-  const io = new IntersectionObserver(es => {
-    es.forEach(e => { if (e.isIntersecting){
-      links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
-    } });
-  }, { rootMargin: '-45% 0px -50% 0px' });
-  secs.forEach(s => io.observe(s));
+  const fit = () => document.querySelectorAll('.card[data-project]').forEach(c => {
+    const f = c.querySelector('.face'), h = c.querySelector('.head'), ch = c.querySelector('.chips');
+    const cs = getComputedStyle(f);
+    const peek = parseFloat(cs.paddingTop) + h.offsetHeight + (ch ? parseFloat(cs.rowGap || 10) + ch.offsetHeight : 0) + parseFloat(cs.paddingBottom) + 1;
+    c.style.setProperty('--peek', Math.ceil(peek) + 'px');
+  });
+  fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit);
 })();
 
-/* Print CV. On the live site the button opens the print dialog.
-   (In the chat preview, printing is blocked, so it shows the print layout on screen instead.) */
+/* whole card opens the overview (buttons inside still go where they say) */
+document.querySelectorAll('.card[data-href]').forEach(c => {
+  c.addEventListener('click', e => { if (!e.target.closest('a')) location.href = c.dataset.href; });
+  c.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target === c){ e.preventDefault(); location.href = c.dataset.href; } });
+});
+
+/* after load, open the first project card briefly so visitors see it expands. Once per visit. */
+(() => {
+  if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  try { if (sessionStorage.getItem('peekShown')) return; sessionStorage.setItem('peekShown', '1'); } catch (e) {}
+  const c = document.querySelector('.card[data-project]');
+  if (!c) return;
+  const run = () => {
+    setTimeout(() => c.classList.add('demo'), 700);
+    setTimeout(() => c.classList.remove('demo'), 2600);
+  };
+  document.readyState === 'complete' ? run() : addEventListener('load', run);
+  c.addEventListener('mouseenter', () => c.classList.remove('demo'), { once: true });
+})();
+
+/* scroll-spy for the section index */
+(() => {
+  const links = [...document.querySelectorAll('.index a')];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-35% 0px -60% 0px' });
+  links.forEach(a => { const t = document.querySelector(a.getAttribute('href')); if (t) io.observe(t); });
+})();
+
+/* coursework: first 5 visible, the rest behind a toggle */
+(() => {
+  const SHOW = 5, list = document.getElementById('courses'), items = [...list.children];
+  if (items.length <= SHOW) return;
+  items.slice(SHOW).forEach(li => li.classList.add('more'));
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'linkbtn';
+  const label = () => b.textContent = list.classList.contains('all') ? 'Show fewer ▴' : `Show all ${items.length} ▾`;
+  b.addEventListener('click', () => { list.classList.toggle('all'); label(); });
+  label(); list.after(b);
+})();
+
+/* Print CV: opens the print dialog; if printing is blocked (chat preview), shows the print layout instead */
 (() => {
   const bar = document.getElementById('previewBar'), root = document.documentElement;
   let printed = false;
   addEventListener('beforeprint', () => { printed = true; });
   document.getElementById('printBtn').addEventListener('click', () => {
-    printed = false;
-    window.print();
-    // if no print dialog opened (blocked in the chat preview), show the print layout on screen
+    printed = false; window.print();
     setTimeout(() => { if (!printed){ root.classList.add('print-preview'); bar.hidden = false; scrollTo(0, 0); } }, 400);
   });
   document.getElementById('exitPreview').addEventListener('click', () => { root.classList.remove('print-preview'); bar.hidden = true; });
   document.getElementById('doPrint').addEventListener('click', () => window.print());
-})();
-</script>
-<script>
-/* coursework: show the first 4 rows, fold the rest behind a toggle */
-(() => {
-  const SHOW = 4, t = document.getElementById('courses');
-  if (!t) return;
-  const rows = [...t.rows];
-  if (rows.length <= SHOW) return;
-  rows.slice(SHOW).forEach(r => r.classList.add('more'));
-  t.classList.add('folded');
-  const b = document.createElement('button');
-  b.type = 'button'; b.className = 'more-btn';
-  const label = () => b.textContent = t.classList.contains('folded') ? `Show all ${rows.length} courses ▾` : 'Show fewer ▴';
-  b.addEventListener('click', () => { t.classList.toggle('folded'); label(); });
-  label(); t.after(b);
 })();
 </script>
 </body>

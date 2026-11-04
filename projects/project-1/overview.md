@@ -6,11 +6,13 @@
   Comments like this one never show on the site. Delete them when you're done.
 -->
 
-# [Project title]
+# PAT Laser Tracking System
 
 [One or two sentences: what it does and why it matters.]
 
+<!-- Main photo: upload it to images/ and remove the comment marks around the next line
 ![Caption for your main photo](images/hero.jpg)
+-->
 
 ## Goal
 
@@ -30,10 +32,10 @@
 
 ## Bill of materials
 
-| Part | Qty | Cost |
-|---|---|---|
-|  |  |  |
-| **Total** |  |  |
+<!-- This shows the spreadsheet bom.xlsx from this project's folder as a table.
+     Edit the spreadsheet in Excel, save, and upload it here with the same name.
+     A .csv file works too: change the name below to bom.csv. -->
+{{sheet: bom.xlsx}}
 
 ## Problems and fixes
 
