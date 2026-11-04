@@ -10,8 +10,8 @@
   Comments like this one never show on the site.
 -->
 
-## YYYY-MM-DD | [Title of your first entry]
+## 2026-11-04 | Test log 1 | Kayson Felix-Davila
 
-[What you did, what happened, what you learned.]
+This is a test entry!
 
-<!-- ![Caption](images/photo.jpg) -->
+![](images/2026-11-04-test-log-1.jpg)
