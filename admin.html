@@ -63,6 +63,13 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 .msg{font:13px var(--mono)}
 .msg.ok{color:#1a7f37}
 .msg.err{color:#cf222e}
+.modes{display:flex;gap:4px;margin-bottom:18px;border-bottom:1px solid var(--border)}
+.modes button{font:14px var(--mono);color:var(--muted);background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;margin-bottom:-1px;cursor:pointer}
+.modes button[aria-selected="true"]{color:var(--fg);border-bottom-color:#fd8c73}
+.projbar{display:flex;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.projbar > div{flex:1;min-width:220px}
+#ovBody{min-height:520px;font:15px/1.6 var(--mono)}
+.bomrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .recent{list-style:none;font-size:15px}
 .recent li{display:flex;gap:14px;padding:8px 0;border-top:1px solid var(--border)}
 .recent li:first-child{border-top:0}
@@ -115,11 +122,19 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     </details>
   </section>
 
+  <!-- ===================== PROJECT + MODE ===================== -->
+  <div id="top" hidden>
+    <div class="projbar"><div><label for="proj">Project</label><select id="proj"></select></div></div>
+    <div class="modes" role="tablist">
+      <button type="button" role="tab" id="modeLog" aria-selected="true">New log entry</button>
+      <button type="button" role="tab" id="modeOv" aria-selected="false">Edit overview</button>
+    </div>
+  </div>
+
   <!-- ===================== NEW ENTRY ===================== -->
   <section class="card" id="form" hidden>
     <h2>New entry</h2>
-    <div class="row3">
-      <div><label for="proj">Project</label><select id="proj"></select></div>
+    <div class="row">
       <div><label for="date">Date</label><input type="date" id="date"></div>
       <div><label for="author">Author</label><input type="text" id="author"></div>
     </div>
@@ -129,7 +144,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     </div>
     <div class="field">
       <label for="body">Entry</label>
-      <div class="tools" role="toolbar" aria-label="Formatting">
+      <div class="tools" role="toolbar" aria-label="Formatting" data-for="body">
         <button type="button" data-wrap="**" title="Bold"><b>B</b></button>
         <button type="button" data-wrap="*" title="Italic"><i>I</i></button>
         <button type="button" data-line="### " title="Sub-heading">H</button>
@@ -154,6 +169,41 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <button class="primary" id="publish" type="button">Publish entry</button>
       <button class="secondary" id="clear" type="button">Clear</button>
       <span class="msg" id="pubMsg" role="status"></span>
+    </div>
+  </section>
+
+  <!-- ===================== EDIT OVERVIEW ===================== -->
+  <section class="card" id="ovCard" hidden>
+    <h2>Overview page</h2>
+    <p class="hint" style="margin-bottom:14px">The first line starting with <code># </code> is the project title. <code>## </code> lines are section headings (they also fill the page's sidebar). The line <code>{{sheet: bom.xlsx}}</code> shows the bill of materials spreadsheet.</p>
+    <div class="tools" role="toolbar" aria-label="Formatting" data-for="ovBody">
+      <button type="button" data-wrap="**" title="Bold"><b>B</b></button>
+      <button type="button" data-wrap="*" title="Italic"><i>I</i></button>
+      <button type="button" data-line="## " title="Section heading">H2</button>
+      <button type="button" data-line="### " title="Sub-heading">H3</button>
+      <button type="button" data-line="- " title="Bulleted list">• List</button>
+      <button type="button" data-line="1. " title="Numbered list">1. List</button>
+      <button type="button" data-link title="Link">Link</button>
+      <button type="button" data-table title="Table">Table</button>
+      <button type="button" id="ovPhotoBtn" title="Upload a photo and insert it at the cursor">Photo</button>
+      <span class="sp"></span>
+      <span class="tabs-ed"><button type="button" id="ovWrite" aria-pressed="true">Write</button><button type="button" id="ovPrev" aria-pressed="false">Preview</button></span>
+    </div>
+    <div class="editor" id="ovWritePane"><textarea id="ovBody" spellcheck="true"></textarea></div>
+    <div class="preview md" id="ovPrevPane" hidden></div>
+    <input type="file" id="ovFile" accept="image/*" hidden>
+    <div class="field">
+      <label>Bill of materials spreadsheet</label>
+      <div class="bomrow">
+        <button class="secondary" type="button" id="bomBtn">Replace bom.xlsx…</button>
+        <span class="hint" id="bomInfo" style="margin:0"></span>
+      </div>
+      <input type="file" id="bomFile" accept=".xlsx,.csv" hidden>
+    </div>
+    <div class="pub">
+      <button class="primary" id="ovSave" type="button">Save overview</button>
+      <button class="secondary" id="ovReload" type="button">Discard changes</button>
+      <span class="msg" id="ovMsg" role="status"></span>
     </div>
   </section>
 
@@ -204,7 +254,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     const out = document.createElement('button'); out.type = 'button'; out.textContent = 'Sign out';
     out.onclick = () => { store.del(); location.reload(); };
     $('who').append(img, span, out); $('who').hidden = false;
-    $('signin').hidden = true; $('form').hidden = false; $('recentCard').hidden = false;
+    $('signin').hidden = true; $('top').hidden = false; $('form').hidden = false; $('recentCard').hidden = false;
     $('author').value = (user.name || user.login).split(' ')[0];
     $('date').value = today();
     await loadProjects();
@@ -246,28 +296,39 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       });
     } catch(e){ ul.innerHTML = '<li class="hint">No log yet. Your first entry will create it.</li>'; }
   }
-  $('proj').onchange = loadRecent;
+  $('proj').onchange = () => { loadRecent(); ov.loadedFor = null; if (!$('ovCard').hidden) loadOverview(); };
 
-  /* ---------- toolbar ---------- */
+  /* ---------- toolbars (work on whichever textarea they belong to) ---------- */
   const ta = $('body');
-  function wrapSel(before, after = before, placeholder = 'text'){
-    const s = ta.selectionStart, e = ta.selectionEnd, sel = ta.value.slice(s, e) || placeholder;
-    ta.setRangeText(before + sel + after, s, e, 'end');
-    ta.selectionStart = s + before.length; ta.selectionEnd = s + before.length + sel.length; ta.focus();
+  function wrapSel(t, before, after = before, placeholder = 'text'){
+    const s = t.selectionStart, e = t.selectionEnd, sel = t.value.slice(s, e) || placeholder;
+    t.setRangeText(before + sel + after, s, e, 'end');
+    t.selectionStart = s + before.length; t.selectionEnd = s + before.length + sel.length; t.focus();
   }
-  function prefixLines(pre){
-    const s = ta.value.lastIndexOf('\n', ta.selectionStart - 1) + 1, e = ta.selectionEnd;
-    const block = ta.value.slice(s, e) || '';
-    const out = (block || '').split('\n').map((l, i) => (pre === '1. ' ? (i + 1) + '. ' : pre) + l).join('\n');
-    ta.setRangeText(out, s, e, 'end'); ta.focus();
+  function prefixLines(t, pre){
+    const s = t.value.lastIndexOf('\n', t.selectionStart - 1) + 1, e = t.selectionEnd;
+    const block = t.value.slice(s, e) || '';
+    const out = block.split('\n').map((l, i) => (pre === '1. ' ? (i + 1) + '. ' : pre) + l).join('\n');
+    t.setRangeText(out, s, e, 'end'); t.focus();
   }
-  document.querySelectorAll('.tools [data-wrap]').forEach(b => b.onclick = () => wrapSel(b.dataset.wrap));
-  document.querySelectorAll('.tools [data-line]').forEach(b => b.onclick = () => prefixLines(b.dataset.line));
-  document.querySelector('.tools [data-link]').onclick = () => wrapSel('[', '](https://)', 'link text');
-  document.querySelector('.tools [data-code]').onclick = () => {
-    const sel = ta.value.slice(ta.selectionStart, ta.selectionEnd);
-    sel.includes('\n') ? wrapSel('```\n', '\n```', 'code') : wrapSel('`');
-  };
+  function insertAtCursor(t, text){
+    const s = t.selectionStart, before = t.value.slice(0, s);
+    const pad = before && !before.endsWith('\n\n') ? (before.endsWith('\n') ? '\n' : '\n\n') : '';
+    const after = t.value.slice(t.selectionEnd);
+    const tail = after.startsWith('\n\n') ? '' : after.startsWith('\n') ? '\n' : '\n\n';
+    t.setRangeText(pad + text + tail, s, t.selectionEnd, 'end'); t.focus();
+  }
+  document.querySelectorAll('.tools[data-for]').forEach(bar => {
+    const t = $(bar.dataset.for);
+    bar.querySelectorAll('[data-wrap]').forEach(b => b.onclick = () => wrapSel(t, b.dataset.wrap));
+    bar.querySelectorAll('[data-line]').forEach(b => b.onclick = () => prefixLines(t, b.dataset.line));
+    bar.querySelectorAll('[data-link]').forEach(b => b.onclick = () => wrapSel(t, '[', '](https://)', 'link text'));
+    bar.querySelectorAll('[data-code]').forEach(b => b.onclick = () => {
+      const sel = t.value.slice(t.selectionStart, t.selectionEnd);
+      sel.includes('\n') ? wrapSel(t, '```\n', '\n```', 'code') : wrapSel(t, '`');
+    });
+    bar.querySelectorAll('[data-table]').forEach(b => b.onclick = () => insertAtCursor(t, '| Column | Column |\n|---|---|\n|  |  |'));
+  });
 
   /* ---------- photos ---------- */
   function resize(file){
@@ -348,8 +409,100 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     $('writePane').hidden = true; pane.hidden = false;
   };
 
-  /* ---------- publish ---------- */
   const blobB64 = blob => new Promise(res => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.readAsDataURL(blob); });
+
+  /* ---------- modes ---------- */
+  function setMode(m){
+    $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov');
+    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov';
+    if (m === 'ov' && !ov.loadedFor) loadOverview();
+  }
+  $('modeLog').onclick = () => setMode('log');
+  $('modeOv').onclick = () => {
+    if (!$('ovCard').hidden) return;
+    setMode('ov');
+  };
+
+  /* ---------- overview editing ---------- */
+  const ov = { sha: null, loadedFor: null, original: '' }, ovLocal = {};
+  async function loadOverview(){
+    const p = $('proj').value; ov.loadedFor = p;
+    $('ovBody').value = ''; $('ovBody').placeholder = 'Loading…'; msg($('ovMsg'), '');
+    try {
+      const f = await gh(`/repos/${REPO}/contents/projects/${p}/overview.md?ref=${BRANCH}`);
+      ov.sha = f.sha; ov.original = unb64(f.content);
+    } catch (e){
+      if (e.status !== 404) return msg($('ovMsg'), 'Could not load: ' + e.message, 'err');
+      ov.sha = null; ov.original = '# ' + ($('proj').selectedOptions[0]?.textContent || 'Project title') + '\n\n';
+    }
+    $('ovBody').value = ov.original; $('ovBody').placeholder = '';
+    $('ovWrite').click(); loadBomInfo();
+  }
+  async function loadBomInfo(){
+    try { const f = await gh(`/repos/${REPO}/contents/projects/${$('proj').value}/bom.xlsx?ref=${BRANCH}`); $('bomInfo').textContent = 'Current file: bom.xlsx (' + Math.round(f.size / 1024) + ' KB)'; }
+    catch (e){ $('bomInfo').textContent = 'No spreadsheet yet.'; }
+  }
+  $('ovWrite').onclick = () => { $('ovWrite').setAttribute('aria-pressed', 'true'); $('ovPrev').setAttribute('aria-pressed', 'false'); $('ovWritePane').hidden = false; $('ovPrevPane').hidden = true; };
+  $('ovPrev').onclick = () => {
+    $('ovWrite').setAttribute('aria-pressed', 'false'); $('ovPrev').setAttribute('aria-pressed', 'true');
+    const pane = $('ovPrevPane'); pane.innerHTML = '';
+    const src = $('ovBody').value, t = src.match(/^#\s+(.+)$/m);
+    const h = document.createElement('div'); h.className = 'ptitle'; h.textContent = t ? t[1] : 'Untitled';
+    const md = document.createElement('div');
+    Site.render(src, `${location.pathname.replace(/[^/]*$/, '')}projects/${$('proj').value}/`, md);
+    md.querySelectorAll('img').forEach(img => { const n = (img.getAttribute('src') || '').split('/').pop(); if (ovLocal[n]) img.src = ovLocal[n]; });
+    pane.append(h, md); $('ovWritePane').hidden = true; pane.hidden = false;
+  };
+  // photo: resize, upload now, insert at the cursor
+  $('ovPhotoBtn').onclick = () => $('ovFile').click();
+  $('ovFile').onchange = async () => {
+    const file = $('ovFile').files[0]; $('ovFile').value = ''; if (!file) return;
+    const out = $('ovMsg');
+    try {
+      msg(out, 'Uploading photo…');
+      const blob = await resize(file);
+      const name = `${today()}-${slug(file.name.replace(/\.[^.]+$/, ''))}.jpg`, path = `projects/${$('proj').value}/images/${name}`;
+      let sha; try { sha = (await gh(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`)).sha; } catch(e){}
+      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Overview photo (${user.login})`, content: await blobB64(blob), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+      ovLocal[name] = URL.createObjectURL(blob);
+      insertAtCursor($('ovBody'), `![Caption](images/${name})`);
+      msg(out, 'Photo uploaded. Edit "Caption" in the text, then save.', 'ok');
+    } catch (e){ msg(out, 'Photo upload failed: ' + e.message, 'err'); }
+  };
+  // replace the bill of materials spreadsheet
+  $('bomBtn').onclick = () => $('bomFile').click();
+  $('bomFile').onchange = async () => {
+    const file = $('bomFile').files[0]; $('bomFile').value = ''; if (!file) return;
+    const out = $('ovMsg'), name = /\.csv$/i.test(file.name) ? 'bom.csv' : 'bom.xlsx', path = `projects/${$('proj').value}/${name}`;
+    try {
+      msg(out, 'Uploading ' + name + '…');
+      let sha; try { sha = (await gh(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`)).sha; } catch(e){}
+      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Bill of materials (${user.login})`, content: await blobB64(file), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+      msg(out, name + ' uploaded. It shows on the Overview in about a minute.', 'ok'); loadBomInfo();
+      if (name === 'bom.csv' && !/\{\{\s*sheet:\s*bom\.csv/.test($('ovBody').value)) msg(out, 'bom.csv uploaded. Change {{sheet: bom.xlsx}} to {{sheet: bom.csv}} in the text and save.', 'ok');
+    } catch (e){ msg(out, 'Upload failed: ' + e.message, 'err'); }
+  };
+  $('ovReload').onclick = () => { $('ovBody').value = ov.original; msg($('ovMsg'), 'Changes discarded.'); };
+  $('ovSave').onclick = async () => {
+    const out = $('ovMsg'), p = $('proj').value, text = $('ovBody').value;
+    if (!/^#\s+\S/m.test(text)) return msg(out, 'Keep a title line starting with "# ".', 'err');
+    $('ovSave').disabled = true; msg(out, 'Saving…');
+    try {
+      const r = await gh(`/repos/${REPO}/contents/projects/${p}/overview.md`, { method: 'PUT', body: JSON.stringify({ message: `Overview update (${user.login})`, content: b64(text.replace(/\s*$/, '\n')), branch: BRANCH, ...(ov.sha ? { sha: ov.sha } : {}) }) });
+      ov.sha = r.content.sha; ov.original = text;
+      out.className = 'msg ok'; out.innerHTML = ''; out.append('Saved. Live in about a minute. ');
+      const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}`; a.textContent = 'Open the overview'; out.append(a);
+      const t = text.match(/^#\s+(.+)$/m); if (t) $('proj').selectedOptions[0].textContent = t[1].trim();
+    } catch (e){
+      let m = 'Could not save: ' + e.message;
+      if (e.status === 409) m = 'Someone else changed this page since you opened it. Copy your text somewhere safe, press "Discard changes" after reloading the page, and re-apply your edits.';
+      else if (e.status === 403 || /not accessible/i.test(e.message)) m = "Your token can't change the site. Owner: token Contents must be 'Read and write'. Collaborator: use a classic token with public_repo.";
+      msg(out, m, 'err');
+    } finally { $('ovSave').disabled = false; }
+  };
+  window.addEventListener('beforeunload', e => { if (!$('ovCard').hidden && $('ovBody').value !== ov.original){ e.preventDefault(); e.returnValue = ''; } });
+
+  /* ---------- publish ---------- */
   $('publish').onclick = async () => {
     const p = $('proj').value, out = $('pubMsg');
     if (!$('date').value) return msg(out, 'Pick a date.', 'err');

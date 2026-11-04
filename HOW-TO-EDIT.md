@@ -5,8 +5,8 @@ Everything is done on github.com. No code needed for project updates.
 ## Folder layout
 
 ```
-index.html          ← homepage (everything: name, links, projects, experience, involvement, background)
-admin.html          ← lab notebook editor (post entries without touching files)
+index.html          ← homepage (name, links, projects, involvement, background, experience)
+admin.html          ← editor: post lab notebook entries and edit project overviews
 project.html        ← project page template (don't edit)
 style.css           ← colors and fonts for the project pages and editor
 site.js             ← helper code (don't edit)
@@ -19,6 +19,12 @@ projects/
     images/         ← photos for this project
 ```
 
+## Edit a project's Overview page (easy way)
+
+In admin.html, pick the project and choose **Edit overview**. Edit the text with the
+toolbar, use **Photo** to upload a picture at the cursor, check **Preview**, and press
+**Save overview**. **Replace bom.xlsx** uploads a new bill of materials spreadsheet.
+
 ## Post a lab notebook update (easy way)
 
 Open **kaysonfelix.github.io/admin.html**, sign in once, fill in the form and press
@@ -26,9 +32,11 @@ Open **kaysonfelix.github.io/admin.html**, sign in once, fill in the form and pr
 
 ### Give someone posting access
 1. Repo **Settings → Collaborators → Add people**, enter their GitHub username. They accept the invite.
-2. They create a token: GitHub **Settings → Developer settings → Personal access tokens →
-   Fine-grained tokens → Generate new token**. Repository access: only this site repo.
-   Permissions: **Contents → Read and write**. Copy the token.
+2. They create a **classic** token (GitHub doesn't let fine-grained tokens edit someone
+   else's personal repo): GitHub **Settings → Developer settings → Personal access tokens →
+   Tokens (classic) → Generate new token (classic)**. Check only **public_repo**, set an
+   expiration, and copy it. (You, as the owner, can use a fine-grained token instead:
+   Repository access = only this repo, Contents = Read and write.)
 3. They open admin.html and paste the token. It's remembered in that browser until they sign out.
 
 Remove access any time from **Settings → Collaborators**. Every post is a commit, so the

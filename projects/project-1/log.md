@@ -10,8 +10,8 @@
   Comments like this one never show on the site.
 -->
 
-## 2026-11-03 | Test Post | kaysonfelix
+## YYYY-MM-DD | [Title of your first entry]
 
-Test Post 1
+[What you did, what happened, what you learned.]
 
-![](images/2026-11-03-test-post.jpg)
+<!-- ![Caption](images/photo.jpg) -->
