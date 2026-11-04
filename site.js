@@ -213,5 +213,23 @@ window.Site = (() => {
     return el;
   }
 
-  return { load, render, parseLog, fmtDate, esc, people, avatar };
+  /* projects list (edited in admin.html → Projects; saved to projects.json).
+     Until projects.json exists, this default is shown. */
+  const defaultProjects = [{
+    id: 'project-1',
+    title: 'PAT Laser Tracking System',
+    status: 'In progress',
+    tags: 'beam steering, beacon tracking, closed-loop control, free-space optics',
+    summary: 'A bench-scale pointing, acquisition and tracking (PAT) system that locks a laser onto a moving light beacon with closed-loop control, modeled on the terminals used in satellite laser links.',
+    thumb: ''
+  }];
+  async function projects(){
+    try {
+      const r = await fetch('projects.json', { cache: 'no-cache' });
+      if (r.ok){ const j = await r.json(); if (Array.isArray(j.projects)) return j.projects.filter(p => p && /^[a-z0-9_-]+$/i.test(p.id)); }
+    } catch (e) {}
+    return defaultProjects.map(p => ({ ...p }));
+  }
+
+  return { load, render, parseLog, fmtDate, esc, people, avatar, projects, defaultProjects };
 })();

@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Project Editor</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap">
-<link rel="stylesheet" href="style.css?v=20261104">
+<link rel="stylesheet" href="style.css?v=20261104b">
 <style>
 /* Editor: one column form, preview tab, publish bar */
 .wrap{max-width:860px}
@@ -73,6 +73,11 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 .recent li:first-child{border-top:0}
 .recent time{font:12px/2 var(--mono);color:var(--muted);min-width:96px}
 .recent .by{margin-left:auto;font:12px/2 var(--mono);color:var(--muted)}
+.recent li{align-items:center}
+.recent .acts{display:flex;gap:6px;margin-left:10px}
+.recent .acts button{font:500 12px var(--mono);padding:4px 10px;border:1px solid var(--border);background:var(--row);color:var(--fg);border-radius:5px;cursor:pointer}
+.recent .acts button.del{color:#b42318}
+.recent .acts button:disabled{opacity:.4;cursor:default}
 </style>
 </head>
 <body>
@@ -130,12 +135,13 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <button type="button" role="tab" id="modeLog" aria-selected="true">New project log entry</button>
       <button type="button" role="tab" id="modeOv" aria-selected="false">Edit project overview</button>
       <button type="button" role="tab" id="modeHome" aria-selected="false">Homepage</button>
+      <button type="button" role="tab" id="modeProj" aria-selected="false">Projects</button>
     </div>
   </div>
 
   <!-- ===================== NEW ENTRY ===================== -->
   <section class="card" id="form" hidden>
-    <h2>New project log entry</h2>
+    <h2 id="formHead">New project log entry</h2>
     <div class="row">
       <div><label for="date">Date</label><input type="date" id="date"></div>
       <div><label for="author">Author</label><input type="text" id="author"></div>
@@ -170,6 +176,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     <div class="pub">
       <button class="primary" id="publish" type="button">Publish entry</button>
       <button class="secondary" id="clear" type="button">Clear</button>
+      <button class="secondary" id="cancelEdit" type="button" hidden>Cancel edit</button>
       <span class="msg" id="pubMsg" role="status"></span>
     </div>
   </section>
@@ -206,6 +213,46 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <button class="primary" id="ovSave" type="button">Save overview</button>
       <button class="secondary" id="ovReload" type="button">Discard changes</button>
       <span class="msg" id="ovMsg" role="status"></span>
+    </div>
+  </section>
+
+  <!-- ===================== PROJECTS: add / edit / reorder / delete ===================== -->
+  <section class="card" id="projCard" hidden>
+    <h2>Projects</h2>
+    <p>These are the project slides on the homepage, in this order. Edit a project to change its title, status, tags, description or thumbnail.</p>
+    <ul class="recent" id="projList" style="margin-top:14px"></ul>
+    <div class="pub" style="margin-top:14px">
+      <input type="text" id="newProjTitle" placeholder="New project title" style="max-width:320px">
+      <button class="primary" id="addProj" type="button">Add project</button>
+      <span class="msg" id="projMsg" role="status"></span>
+    </div>
+  </section>
+
+  <section class="card" id="projEdit" hidden>
+    <h2>Edit project <span class="hint" id="peId" style="text-transform:none"></span></h2>
+    <div class="row">
+      <div><label for="peTitle">Title</label><input type="text" id="peTitle"></div>
+      <div><label for="peStatus">Status</label>
+        <select id="peStatus"><option>In progress</option><option>Complete</option><option>Planning</option><option>On hold</option></select></div>
+    </div>
+    <div class="field"><label for="peTags">Tags (comma separated)</label><input type="text" id="peTags"></div>
+    <div class="field"><label for="peSummary">Short description</label><textarea id="peSummary" style="min-height:90px"></textarea></div>
+    <div class="field">
+      <label>Thumbnail</label>
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <div id="peThumb" style="width:200px;height:125px;border:1px solid var(--border);background:var(--row);display:flex;align-items:center;justify-content:center;overflow:hidden;font:13px var(--mono);color:var(--muted)">N/A</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="secondary" id="peThumbBtn" type="button">Choose thumbnail…</button>
+          <button class="secondary" id="peThumbDel" type="button">Remove thumbnail</button>
+        </div>
+      </div>
+      <input type="file" id="peThumbFile" accept="image/*" hidden>
+      <p class="hint">Landscape photos look best. It's resized before upload.</p>
+    </div>
+    <div class="pub">
+      <button class="primary" id="peSave" type="button">Save project</button>
+      <button class="secondary" id="peCancel" type="button">Close</button>
+      <span class="msg" id="peMsg" role="status"></span>
     </div>
   </section>
 
@@ -264,14 +311,14 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 
   <!-- ===================== RECENT ===================== -->
   <section class="card" id="recentCard" hidden>
-    <h2>Recent entries <span class="hint" id="recentProj" style="text-transform:none"></span></h2>
+    <h2>Entries <span class="hint" id="recentProj" style="text-transform:none"></span></h2>
     <ul class="recent" id="recent"></ul>
     <p class="hint" style="margin-top:12px">To fix or delete an entry, edit <code>log.md</code> on GitHub. New entries take about a minute to appear on the live site.</p>
   </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
-<script src="site.js"></script>
+<script src="site.js?v=20261104b"></script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
@@ -324,35 +371,81 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
   $('tok').addEventListener('keydown', e => { if (e.key === 'Enter') $('signinBtn').click(); });
 
   /* ---------- projects + recent entries ---------- */
-  async function loadProjects(){
-    const items = await gh(`/repos/${REPO}/contents/projects?ref=${BRANCH}`);
-    const dirs = items.filter(i => i.type === 'dir').map(i => i.name);
+  /* projects.json helpers (the homepage reads this file; until it exists the default list in site.js is used) */
+  async function readProjects(){
+    try { const f = await gh(`/repos/${REPO}/contents/projects.json?ref=${BRANCH}`); const j = JSON.parse(unb64(f.content)); return { sha: f.sha, list: Array.isArray(j.projects) ? j.projects : [] }; }
+    catch (e){ if (e.status === 404) return { sha: null, list: Site.defaultProjects.map(p => ({ ...p })) }; throw e; }
+  }
+  async function writeProjects(list, sha, message){
+    const r = await gh(`/repos/${REPO}/contents/projects.json`, { method: 'PUT', body: JSON.stringify({ message, content: b64(JSON.stringify({ projects: list }, null, 2) + '\n'), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+    return r.content.sha;
+  }
+  async function loadProjects(keep){
+    const cur = keep || $('proj').value;
+    const { list } = await readProjects();
     $('proj').innerHTML = '';
-    for (const d of dirs){
-      let label = d;
-      try { const f = await gh(`/repos/${REPO}/contents/projects/${d}/overview.md?ref=${BRANCH}`); const m = unb64(f.content).match(/^#\s+(.+)$/m); if (m) label = m[1].trim(); } catch(e){}
-      const o = document.createElement('option'); o.value = d; o.textContent = label; $('proj').append(o);
-    }
+    for (const p of list){ const o = document.createElement('option'); o.value = p.id; o.textContent = p.title || p.id; $('proj').append(o); }
+    if (cur && list.some(p => p.id === cur)) $('proj').value = cur;
     await loadRecent();
   }
+  /* split log.md into its header (the comment) and one block per "## " entry, keeping the exact text */
+  function splitLog(raw){
+    const idx = []; const re = /^## /gm; let m; while ((m = re.exec(raw))) idx.push(m.index);
+    if (!idx.length) return { head: raw, blocks: [] };
+    const blocks = idx.map((s, i) => { const text = raw.slice(s, idx[i + 1] ?? raw.length); return { text, e: Site.parseLog(text)[0] }; });
+    return { head: raw.slice(0, idx[0]), blocks };
+  }
+  const joinLog = (head, blocks) => head + blocks.map(b => b.text.replace(/\s*$/, '\n\n')).join('').replace(/\n+$/, '\n');
+  let editing = null;   // { text } of the entry being edited
   async function loadRecent(){
     const p = $('proj').value; $('recentProj').textContent = '· ' + ($('proj').selectedOptions[0]?.textContent || '');
     const ul = $('recent'); ul.innerHTML = '<li class="hint">Loading…</li>';
     try {
       const f = await gh(`/repos/${REPO}/contents/projects/${p}/log.md?ref=${BRANCH}`);
-      const entries = Site.parseLog(unb64(f.content)).filter(e => /^\d{4}-\d{2}-\d{2}$/.test(e.date)).slice(0, 5);
-      ul.innerHTML = entries.length ? '' : '<li class="hint">No entries yet.</li>';
-      entries.forEach(e => {
-        const li = document.createElement('li');
+      const blocks = splitLog(unb64(f.content)).blocks.filter(b => b.e && /^\d{4}-\d{2}-\d{2}$/.test(b.e.date));
+      ul.innerHTML = blocks.length ? '' : '<li class="hint">No entries yet.</li>';
+      blocks.forEach(b => {
+        const e = b.e, li = document.createElement('li');
         const t = document.createElement('time'); t.textContent = Site.fmtDate(e.date);
         const s = document.createElement('span'); s.textContent = e.title;
         li.append(t, s);
-        if (e.author){ const b = document.createElement('span'); b.className = 'by'; b.textContent = e.author; li.append(b); }
-        ul.append(li);
+        if (e.author){ const by = document.createElement('span'); by.className = 'by'; by.textContent = e.author; li.append(by); }
+        const acts = document.createElement('span'); acts.className = 'acts';
+        const ed = document.createElement('button'); ed.type = 'button'; ed.textContent = 'Edit';
+        const del = document.createElement('button'); del.type = 'button'; del.className = 'del'; del.textContent = 'Delete';
+        ed.onclick = () => startEdit(b);
+        del.onclick = () => deleteEntry(b, del);
+        acts.append(ed, del); if (!e.author) s.style.marginRight = 'auto'; li.append(acts); ul.append(li);
       });
     } catch(e){ ul.innerHTML = '<li class="hint">No log yet. Your first entry will create it.</li>'; }
   }
-  $('proj').onchange = () => { loadRecent(); ov.loadedFor = null; if (!$('ovCard').hidden) loadOverview(); };
+  function startEdit(b){
+    clearForm(true);
+    editing = { text: b.text };
+    $('date').value = /^\d{4}-\d{2}-\d{2}$/.test(b.e.date) ? b.e.date : today();
+    $('title').value = b.e.title || ''; $('author').value = b.e.author || ''; ta.value = b.e.body || '';
+    $('formHead').textContent = 'Edit log entry'; $('publish').textContent = 'Save changes'; $('cancelEdit').hidden = false; $('clear').hidden = true;
+    $('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function endEdit(){
+    editing = null; $('formHead').textContent = 'New project log entry'; $('publish').textContent = 'Publish entry'; $('cancelEdit').hidden = true; $('clear').hidden = false;
+  }
+  async function deleteEntry(b, btn){
+    if (!confirm(`Delete the entry "${b.e.title}" (${Site.fmtDate(b.e.date)})? This can't be undone from here.`)) return;
+    const p = $('proj').value, path = `projects/${p}/log.md`; btn.disabled = true;
+    try {
+      const f = await gh(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`);
+      const { head, blocks } = splitLog(unb64(f.content));
+      const k = blocks.findIndex(x => x.text.trim() === b.text.trim());
+      if (k < 0) throw new Error('That entry changed since the list loaded. Reload and try again.');
+      blocks.splice(k, 1);
+      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Project log: delete "${b.e.title}" (${user.login})`, content: b64(joinLog(head, blocks)), branch: BRANCH, sha: f.sha }) });
+      if (editing && editing.text.trim() === b.text.trim()){ clearForm(); }
+      msg($('pubMsg'), 'Entry deleted. The site updates in about a minute.', 'ok');
+      await loadRecent();
+    } catch (e){ msg($('pubMsg'), 'Could not delete: ' + e.message, 'err'); btn.disabled = false; }
+  }
+  $('proj').onchange = () => { if (editing) clearForm(); loadRecent(); ov.loadedFor = null; if (!$('ovCard').hidden) loadOverview(); };
 
   /* ---------- toolbars (work on whichever textarea they belong to) ---------- */
   const ta = $('body');
@@ -460,7 +553,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     const h = document.createElement('div'); h.className = 'ptitle'; h.textContent = e.title || 'Untitled';
     const m = document.createElement('div'); m.className = 'pmeta2'; m.textContent = [Site.fmtDate(e.date), e.author].filter(Boolean).join(' · ');
     const md = document.createElement('div');
-    Site.render(e.body || '*Nothing written yet.*', '', md);
+    Site.render(e.body || '*Nothing written yet.*', `projects/${$('proj').value}/`, md);
     pane.append(h, m, md);
     $('writePane').hidden = true; pane.hidden = false;
   };
@@ -469,13 +562,16 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 
   /* ---------- modes ---------- */
   function setMode(m){
-    $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov'); $('modeHome').setAttribute('aria-selected', m === 'home');
+    $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov'); $('modeHome').setAttribute('aria-selected', m === 'home'); $('modeProj').setAttribute('aria-selected', m === 'proj');
+    $('projCard').hidden = m !== 'proj'; if (m !== 'proj') $('projEdit').hidden = true;
     $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov'; $('homeCard').hidden = m !== 'home'; $('galCard').hidden = m !== 'home'; $('meCard').hidden = m !== 'home';
-    document.querySelector('.projbar').hidden = m === 'home';
+    document.querySelector('.projbar').hidden = m === 'home' || m === 'proj';
+    if (m === 'proj') drawProjects();
     if (m === 'ov' && !ov.loadedFor) loadOverview();
     if (m === 'home' && !home.loaded){ loadHome(); drawGallery(); drawMe(); }
   }
   $('modeHome').onclick = () => setMode('home');
+  $('modeProj').onclick = () => setMode('proj');
 
   /* ---------- homepage: featured LinkedIn post ---------- */
   const home = { loaded: false, sha: null };
@@ -538,11 +634,26 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       const txt = document.createElement('span'); txt.style.flex = '1'; txt.textContent = (g.caption || '(no caption)') + (g.date ? ' · ' + g.date : '');
       const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'secondary'; rm.textContent = 'Remove'; rm.style.padding = '6px 12px';
       rm.onclick = async () => {
+        if (!confirm('Delete this photo from the gallery?')) return;
         rm.disabled = true; msg($('galMsg'), 'Removing…');
-        try { const f = await readFeatured(); const list = (f.data.gallery || []).filter(x => x.src !== g.src); f.data.gallery = list; await writeFeatured(f.data, f.sha, `Gallery: remove photo (${user.login})`); msg($('galMsg'), 'Removed. The homepage updates in about a minute.', 'ok'); drawGallery(); }
+        try { const f = await readFeatured(); const list = (f.data.gallery || []).filter(x => x.src !== g.src); f.data.gallery = list; await writeFeatured(f.data, f.sha, `Gallery: remove photo (${user.login})`);
+          try { const fi = await gh(`/repos/${REPO}/contents/${g.src}?ref=${BRANCH}`); await gh(`/repos/${REPO}/contents/${g.src}`, { method: 'DELETE', body: JSON.stringify({ message: `Gallery: delete ${g.src} (${user.login})`, sha: fi.sha, branch: BRANCH }) }); } catch (e){}
+          msg($('galMsg'), 'Deleted. The homepage updates in about a minute.', 'ok'); drawGallery(); }
         catch (e){ msg($('galMsg'), galErr(e), 'err'); rm.disabled = false; }
       };
-      li.append(img, txt, rm); ul.append(li);
+      const ed = document.createElement('button'); ed.type = 'button'; ed.className = 'secondary'; ed.textContent = 'Edit caption'; ed.style.padding = '6px 12px';
+      ed.onclick = async () => {
+        if (ed.dataset.on){
+          const v = li.querySelector('input').value.trim(); ed.disabled = true; msg($('galMsg'), 'Saving…');
+          try { const f = await readFeatured(); const it = (f.data.gallery || []).find(x => x.src === g.src); if (it){ it.caption = v; await writeFeatured(f.data, f.sha, `Gallery: edit caption (${user.login})`); } msg($('galMsg'), 'Caption saved.', 'ok'); drawGallery(); }
+          catch (e){ msg($('galMsg'), galErr(e), 'err'); ed.disabled = false; }
+          return;
+        }
+        const inp = document.createElement('input'); inp.type = 'text'; inp.value = g.caption || ''; inp.style.flex = '1';
+        txt.replaceWith(inp); inp.focus(); ed.textContent = 'Save'; ed.dataset.on = '1';
+        inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') ed.click(); });
+      };
+      li.append(img, txt, ed, rm); ul.append(li);
     });
   }
   $('galAdd').onclick = () => $('galFile').click();
@@ -617,6 +728,103 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     try { const f = await readFeatured(); if (f.data.people && f.data.people[key]){ delete f.data.people[key]; await writeFeatured(f.data, f.sha, `Profile picture removed (${user.login})`); } showMe(''); msg(out, 'Removed. Your initials show instead.', 'ok'); }
     catch (e){ msg(out, galErr(e), 'err'); }
   };
+
+  /* ---------- projects: add / edit / reorder / delete ---------- */
+  const pe = { id: null, thumbBlob: null, thumbRemoved: false };
+  const projErr = e => (e.status === 403 || /not accessible/i.test(e.message)) ? "Your token can't change the site. Owner: token Contents must be 'Read and write'. Collaborator: use a classic token with public_repo." : 'Could not save: ' + e.message;
+  async function drawProjects(){
+    const ul = $('projList'); ul.innerHTML = '<li class="hint">Loading…</li>';
+    let list; try { list = (await readProjects()).list; } catch (e){ ul.innerHTML = ''; return msg($('projMsg'), projErr(e), 'err'); }
+    ul.innerHTML = list.length ? '' : '<li class="hint">No projects yet.</li>';
+    list.forEach((p, i) => {
+      const li = document.createElement('li');
+      const th = document.createElement('span'); th.style.cssText = 'width:64px;height:40px;flex:none;border:1px solid var(--border);background:var(--row);overflow:hidden;display:flex;align-items:center;justify-content:center;font:10px var(--mono);color:var(--muted)';
+      if (p.thumb){ const im = document.createElement('img'); im.src = p.thumb + '?t=' + Date.now(); im.alt = ''; im.style.cssText = 'width:100%;height:100%;object-fit:cover'; th.append(im); } else th.textContent = 'N/A';
+      const s = document.createElement('span'); s.style.marginRight = 'auto'; s.textContent = p.title || p.id;
+      const acts = document.createElement('span'); acts.className = 'acts';
+      const mk = (label, fn, cls) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; if (cls) b.className = cls; b.onclick = fn; acts.append(b); return b; };
+      mk('↑', () => moveProject(i, -1)).disabled = i === 0;
+      mk('↓', () => moveProject(i, 1)).disabled = i === list.length - 1;
+      mk('Edit', () => openProject(p));
+      mk('Delete', () => deleteProject(p), 'del');
+      li.append(th, s, acts); ul.append(li);
+    });
+  }
+  async function moveProject(i, d){
+    try { const { sha, list } = await readProjects(); const [x] = list.splice(i, 1); list.splice(i + d, 0, x); await writeProjects(list, sha, `Projects: reorder (${user.login})`); msg($('projMsg'), 'Order saved. The homepage updates in about a minute.', 'ok'); drawProjects(); loadProjects(); }
+    catch (e){ msg($('projMsg'), projErr(e), 'err'); }
+  }
+  function showThumb(src){ const b = $('peThumb'); b.innerHTML = ''; if (src){ const im = document.createElement('img'); im.src = src; im.alt = ''; im.style.cssText = 'width:100%;height:100%;object-fit:cover'; b.append(im); } else b.textContent = 'N/A'; }
+  function openProject(p){
+    pe.id = p.id; pe.thumbBlob = null; pe.thumbRemoved = false;
+    $('peId').textContent = '· ' + p.id; $('peTitle').value = p.title || ''; $('peStatus').value = p.status || 'In progress';
+    $('peTags').value = p.tags || ''; $('peSummary').value = p.summary || '';
+    showThumb(p.thumb ? p.thumb + '?t=' + Date.now() : ''); msg($('peMsg'), '');
+    $('projEdit').hidden = false; $('projEdit').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  $('peCancel').onclick = () => { $('projEdit').hidden = true; };
+  $('peThumbBtn').onclick = () => $('peThumbFile').click();
+  $('peThumbFile').onchange = async () => {
+    const f = $('peThumbFile').files[0]; $('peThumbFile').value = ''; if (!f) return;
+    try { pe.thumbBlob = await resize(f); pe.thumbRemoved = false; showThumb(URL.createObjectURL(pe.thumbBlob)); msg($('peMsg'), 'Thumbnail ready. Press Save project.'); }
+    catch (e){ msg($('peMsg'), e.message, 'err'); }
+  };
+  $('peThumbDel').onclick = () => { pe.thumbBlob = null; pe.thumbRemoved = true; showThumb(''); msg($('peMsg'), 'Thumbnail will be removed when you press Save project.'); };
+  $('peSave').onclick = async () => {
+    const out = $('peMsg'); if (!$('peTitle').value.trim()) return msg(out, 'Add a title.', 'err');
+    $('peSave').disabled = true;
+    try {
+      let thumbPath;
+      if (pe.thumbBlob){
+        thumbPath = `projects/${pe.id}/cover.jpg`;
+        let sha = null; try { sha = (await gh(`/repos/${REPO}/contents/${thumbPath}?ref=${BRANCH}`)).sha; } catch (e){}
+        msg(out, 'Uploading thumbnail…');
+        await gh(`/repos/${REPO}/contents/${thumbPath}`, { method: 'PUT', body: JSON.stringify({ message: `Project thumbnail: ${pe.id} (${user.login})`, content: await blobB64(pe.thumbBlob), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+      }
+      msg(out, 'Saving…');
+      const { sha, list } = await readProjects();
+      const p = list.find(x => x.id === pe.id); if (!p) throw new Error('This project no longer exists.');
+      p.title = $('peTitle').value.trim(); p.status = $('peStatus').value; p.tags = $('peTags').value.trim(); p.summary = $('peSummary').value.trim();
+      if (thumbPath) p.thumb = thumbPath; if (pe.thumbRemoved) p.thumb = '';
+      await writeProjects(list, sha, `Project: ${p.title} (${user.login})`);
+      pe.thumbBlob = null; pe.thumbRemoved = false;
+      msg(out, 'Saved. The homepage updates in about a minute.', 'ok'); drawProjects(); loadProjects();
+    } catch (e){ msg(out, projErr(e), 'err'); }
+    finally { $('peSave').disabled = false; }
+  };
+  $('addProj').onclick = async () => {
+    const title = $('newProjTitle').value.trim(), out = $('projMsg'); if (!title) return msg(out, 'Type a title for the new project.', 'err');
+    $('addProj').disabled = true;
+    try {
+      const { sha, list } = await readProjects();
+      let id = slug(title), n = 2; while (list.some(p => p.id === id)) id = slug(title) + '-' + n++;
+      msg(out, 'Creating project…');
+      const put = (path, text, message) => gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message, content: b64(text), branch: BRANCH }) }).catch(e => { if (e.status !== 422) throw e; });
+      await put(`projects/${id}/overview.md`, `# ${title}\n\nOne or two sentences on what this project is.\n\n## Goal\n\n## Results\n\n## How it works\n\n## Bill of materials\n\n## Problems and fixes\n\n## Next steps\n\n## References\n`, `New project: ${title} (${user.login})`);
+      await put(`projects/${id}/log.md`, `<!--\n  PROJECT LOG. Easiest way to post: open admin.html on the live site.\n  Each entry starts with:  ## YYYY-MM-DD | Title | Name   (newest at the top)\n-->\n`, `New project log: ${title} (${user.login})`);
+      list.push({ id, title, status: 'In progress', tags: '', summary: '', thumb: '' });
+      await writeProjects(list, sha, `Projects: add ${title} (${user.login})`);
+      $('newProjTitle').value = ''; msg(out, `Added "${title}". Edit it to add a description and thumbnail.`, 'ok');
+      await drawProjects(); await loadProjects(id);
+    } catch (e){ msg(out, projErr(e), 'err'); }
+    finally { $('addProj').disabled = false; }
+  };
+  async function deleteProject(p){
+    if (!confirm(`Delete the project "${p.title || p.id}"? Its overview, log, photos and thumbnail will be deleted from the site.`)) return;
+    if (!confirm('Are you sure? This can only be undone from the GitHub history.')) return;
+    const out = $('projMsg');
+    try {
+      msg(out, 'Removing from the homepage…');
+      const { sha, list } = await readProjects();
+      await writeProjects(list.filter(x => x.id !== p.id), sha, `Projects: delete ${p.title || p.id} (${user.login})`);
+      msg(out, 'Deleting files…');
+      const walk = async dir => { let items = []; try { items = await gh(`/repos/${REPO}/contents/${dir}?ref=${BRANCH}`); } catch (e){ return; }
+        for (const it of items){ if (it.type === 'dir') await walk(it.path); else await gh(`/repos/${REPO}/contents/${it.path}`, { method: 'DELETE', body: JSON.stringify({ message: `Delete ${it.path} (${user.login})`, sha: it.sha, branch: BRANCH }) }); } };
+      await walk(`projects/${p.id}`);
+      if (pe.id === p.id) $('projEdit').hidden = true;
+      msg(out, `Deleted "${p.title || p.id}".`, 'ok'); await drawProjects(); await loadProjects();
+    } catch (e){ msg(out, 'Could not delete: ' + e.message, 'err'); drawProjects(); }
+  }
   $('liSave').onclick = () => { const u = liEmbed($('liIn').value); if (!u) return msg($('liMsg'), 'Paste a LinkedIn embed code or post link first.', 'err'); saveHome(u); };
   $('liClear').onclick = () => { $('liIn').value = ''; liShow(); saveHome(''); };
   $('modeLog').onclick = () => setMode('log');
@@ -723,11 +931,18 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       const path = `projects/${p}/log.md`;
       let log = '', sha;
       try { const f = await gh(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`); log = unb64(f.content); sha = f.sha; } catch(e){ if (e.status !== 404) throw e; }
-      const next = insertEntry(log, entryText(false));
-      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Lab notebook: ${$('title').value.trim()} (${who})`, content: b64(next), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+      let next;
+      if (editing){
+        const { head, blocks } = splitLog(log);
+        const k = blocks.findIndex(x => x.text.trim() === editing.text.trim());
+        if (k < 0) throw new Error('That entry changed since you opened it. Copy your text, reload, and try again.');
+        blocks[k] = { text: entryText(false) };
+        next = joinLog(head, blocks);
+      } else next = insertEntry(log, entryText(false));
+      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `${editing ? 'Project log: edit' : 'Project log:'} ${$('title').value.trim()} (${who})`, content: b64(next), branch: BRANCH, ...(sha ? { sha } : {}) }) });
       out.className = 'msg ok';
       out.innerHTML = '';
-      out.append('Published. It will be live in about a minute. ');
+      out.append((editing ? 'Saved.' : 'Published.') + ' It will be live in about a minute. ');
       const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}&view=log`; a.textContent = 'Open the project log'; out.append(a);
       clearForm(false); await loadRecent();
     } catch(e){
@@ -741,8 +956,10 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
   function clearForm(resetMsg = true){
     $('title').value = ''; ta.value = ''; photos.forEach(p => URL.revokeObjectURL(p.url)); photos = []; drawPhotos();
     $('date').value = today(); $('tabWrite').click(); if (resetMsg) msg($('pubMsg'), '');
+    if (editing){ endEdit(); try { const n = localStorage.getItem('labnb-name'); if (n) $('author').value = n; } catch(e){} }
   }
   $('clear').onclick = () => clearForm();
+  $('cancelEdit').onclick = () => clearForm();
 
   /* ---------- start ---------- */
   const saved = store.get();

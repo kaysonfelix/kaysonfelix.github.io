@@ -170,3 +170,25 @@ To check visits: open https://kaysonfelix.goatcounter.com (or the "Site visits �
 ## Profile pictures on log entries
 
 Each collaborator: open admin.html, sign in, go to the **Homepage** tab, find **Your profile picture**, check the name matches what you put as Author on your entries, then press **Choose photo and save**. The photo is cropped to a square and shows next to your name on every log entry (homepage and project log). Without one, your initials show in a circle.
+
+## Editing and deleting log entries
+
+admin.html → **New project log entry** tab. Under the form, **Entries** lists every entry for the chosen project. **Edit** loads it into the form (the button changes to **Save changes**; **Cancel edit** backs out). **Delete** removes it after you confirm.
+
+## Projects: add, edit, reorder, delete, thumbnails
+
+admin.html → **Projects** tab.
+- **Add project**: type a title and press Add. It creates the project's overview and log and adds it to the homepage slider (the N/A slot always stays last).
+- **Edit**: change the title, status, tags, short description, and thumbnail (Choose thumbnail… then Save project).
+- **↑ / ↓**: change the order of the homepage slides.
+- **Delete**: removes the project from the homepage and deletes its overview, log, photos and thumbnail (asks twice).
+
+The list is saved in projects.json. Until that file exists, the homepage shows the default PAT project.
+
+## Gallery
+
+admin.html → **Homepage** tab → Gallery. **Edit caption** to change a caption, **Remove** to delete a photo.
+
+## Updating the site's code without losing anything
+
+All your content lives in files the editor writes: projects.json, featured.json, the projects/ folder, media/gallery/ and media/people/. The update zips Claude sends contain ONLY code (the .html, .js, .css files and the site's built-in images), never those content files. So uploading an update zip can't erase logs, projects, photos or settings. Just upload everything in it.
