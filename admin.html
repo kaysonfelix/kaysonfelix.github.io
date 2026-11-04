@@ -96,7 +96,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 <div class="wrap">
   <div class="ed-head">
     <h1>Project editor</h1>
-    <span class="hint" style="margin-left:auto;margin-right:12px">Site v1.1</span><a class="hint" href="https://kaysonfelix.goatcounter.com" target="_blank" rel="noopener" style="margin-right:12px">Site visits →</a>
+    <span class="hint" style="margin-left:auto;margin-right:12px">Site v1.4</span><a class="hint" href="https://kaysonfelix.goatcounter.com" target="_blank" rel="noopener" style="margin-right:12px">Site visits →</a>
     <div class="who" id="who" hidden></div>
   </div>
 
@@ -335,8 +335,20 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
   const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'entry';
   const today = () => { const d = new Date(); return new Date(d - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10); };
   async function gh(path, opts = {}){
-    const r = await fetch(API + path, { ...opts, headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {}) } });
-    if (!r.ok){ let m = ''; try { m = (await r.json()).message; } catch(e){} const err = new Error(m || r.statusText); err.status = r.status; throw err; }
+    // no-store: always get the latest file (and its sha) from GitHub, never a browser-cached copy
+    const r = await fetch(API + path, { cache: 'no-store', ...opts, headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', ...(opts.headers || {}) } });
+    if (!r.ok){
+      let m = ''; try { m = (await r.json()).message; } catch(e){}
+      // GitHub says the file changed since we read it: grab the current sha and try once more
+      if (opts.method === 'PUT' && (r.status === 409 || /does not match/i.test(m)) && !opts._retried){
+        try {
+          const cur = await gh(path.split('?')[0] + '?ref=' + BRANCH);
+          const body = JSON.parse(opts.body); body.sha = cur.sha;
+          return gh(path, { ...opts, body: JSON.stringify(body), _retried: true });
+        } catch (e2){}
+      }
+      const err = new Error(m || r.statusText); err.status = r.status; throw err;
+    }
     return r.status === 204 ? null : r.json();
   }
   const msg = (el, text, kind) => { el.textContent = text; el.className = 'msg' + (kind ? ' ' + kind : ''); };

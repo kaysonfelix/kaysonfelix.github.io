@@ -114,6 +114,13 @@
   .project h3{margin:0;font-size:1.6em}
   .project .txt{font-size:1.05em;padding:26px 28px}
   .status{color:var(--ok);font-weight:bold;font-size:.9em}
+  .pgal{margin-top:22px;padding-top:16px;border-top:1px solid #dbe4f3}
+  .pgal h4{margin:0 0 10px;font-size:.95em;color:var(--brand)}
+  .pgal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:300px}
+  .pgal-empty{aspect-ratio:4/3;max-width:100%;border:1.5px dashed #a9bbdc;display:flex;align-items:center;justify-content:center;font-size:.8em;color:var(--muted);background:#f7f9fe}
+  .pgal-grid a{display:block;aspect-ratio:4/3;max-width:100%;overflow:hidden;border:1px solid #c5d3ea;background:#eef3fc}
+  .pgal-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+  .pgal-grid a:hover img{transform:scale(1.05)}
   .status.st-complete{color:#1a4db0}
   .status.st-planning,.status.st-on-hold{color:#8a6d1a}
   .project .txt p{margin:4px 0 0}
@@ -220,10 +227,31 @@
 </div>
 </div>
 
-<footer>© 2026 Kayson Felix-Davila. Last updated November 2026. <a class="admin-link" href="admin.html" title="Editor">Admin</a> <span class="admin-link" style="margin-left:6px">v1.1</span></footer>
+<footer>© 2026 Kayson Felix-Davila. Last updated November 2026. <a class="admin-link" href="admin.html" title="Editor">Admin</a> <span class="admin-link" style="margin-left:6px">v1.4</span></footer>
 
 <script src="site.js?v=20261104b"></script>
 <script>
+
+// each project's log, fetched once and shared (project gallery + newest log)
+var logCache = {};
+function getLog(id){ return logCache[id] || (logCache[id] = Site.load('projects/' + id + '/log.md')); }
+
+// project gallery: the 4 most recent photos from that project's log entries
+async function fillGallery(id, grid){
+  var log = await getLog(id), shots = [];
+  var entries = log ? Site.parseLog(log).filter(function(e){ return /^\d{4}-\d{2}-\d{2}$/.test(e.date); }) : [];
+  entries.forEach(function(e, k){ var re = /!\[([^\]]*)\]\(([^)\s]+)\)/g, m; while ((m = re.exec(e.body))) shots.push({ src: m[2], alt: m[1] || e.title, date: e.date, n: k + 1 }); });
+  shots.sort(function(a, b){ return b.date.localeCompare(a.date) || a.n - b.n; });
+  grid.innerHTML = '';
+  shots.slice(0, 4).forEach(function(s){
+    var src = /^(https?:)?\/\//.test(s.src) || s.src.charAt(0) === '/' ? s.src : 'projects/' + id + '/' + s.src.replace(/^\.\//, '');
+    var a = document.createElement('a'); a.href = 'project.html?p=' + encodeURIComponent(id) + '&view=log#e' + s.n; a.title = s.alt;
+    var im = document.createElement('img'); im.src = src; im.alt = s.alt; im.loading = 'lazy'; im.onerror = function(){ a.remove(); };
+    a.append(im); grid.append(a);
+  });
+  // empty slots: dotted boxes marked N/A
+  for (var k = Math.min(shots.length, 4); k < 4; k++){ var e = document.createElement('span'); e.className = 'pgal-empty'; e.textContent = 'N/A'; grid.append(e); }
+}
 
 // projects: built from projects.json (falls back to the default list in site.js)
 var projectsReady = (async function(){
@@ -243,7 +271,13 @@ var projectsReady = (async function(){
     var btns = document.createElement('div'); btns.className = 'btns';
     var b1 = document.createElement('a'); b1.className = 'btn'; b1.href = href + '&view=log'; b1.textContent = 'Project Log';
     var b2 = document.createElement('a'); b2.className = 'btn'; b2.href = href + '&view=overview'; b2.textContent = 'Project Overview';
-    btns.append(b1, b2); txt.append(h, st, tg, sm, btns); row.append(pic, txt); track.append(row);
+    btns.append(b1, b2);
+    var gal = document.createElement('div'); gal.className = 'pgal';
+    var gh = document.createElement('h4'); gh.textContent = 'Project Gallery';
+    var grid = document.createElement('div'); grid.className = 'pgal-grid'; grid.innerHTML = '<span class="small">Loading...</span>';
+    gal.append(gh, grid);
+    txt.append(h, st, tg, sm, btns, gal); row.append(pic, txt); track.append(row);
+    fillGallery(p.id, grid);
     row.addEventListener('click', function(e){ if (!e.target.closest('a')) location.href = row.dataset.href; });
     row.addEventListener('keydown', function(e){ if (e.key === 'Enter') location.href = row.dataset.href; });
   });
@@ -280,7 +314,7 @@ var projectsReady = (async function(){
   var box = document.getElementById('logBox'), all = [];
   var ids = (await projectsReady).map(function(p){ return p.id; });
   for (var id of ids){
-    var log = await Site.load('projects/' + id + '/log.md'); if (!log) continue;
+    var log = await getLog(id); if (!log) continue;
     Site.parseLog(log).forEach(function(e, i){ if (/^\d{4}-\d{2}-\d{2}$/.test(e.date)) all.push(Object.assign({ id: id, i: i }, e)); });
   }
   if (!all.length){ box.innerHTML = '<p class="small">N/A</p>'; return; }
