@@ -4,10 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Lab Notebook Editor</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Redaction:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Project Editor</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap">
 <link rel="stylesheet" href="style.css">
 <style>
 /* Editor: one column form, preview tab, publish bar */
@@ -78,8 +76,10 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 </style>
 </head>
 <body>
+<header class="site-head"><div class="site-inner"><a class="site-name" href="index.html">Kayson Felix-Davila</a><span class="site-tag">B.S. Photonics Science &amp; Engineering, CREOL at the University of Central Florida</span></div></header>
+<nav class="site-nav"><div class="site-inner"><a href="index.html">Home</a><span class="site-email">kaysonfelix7@gmail.com</span><span class="site-spacer"></span><a class="site-resume" href="resume.pdf" target="_blank" rel="noopener">Resume</a><a class="ico" href="https://www.linkedin.com/in/kayson-felix-335b9043b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M13.6 0H2.4A2.4 2.4 0 0 0 0 2.4v11.2A2.4 2.4 0 0 0 2.4 16h11.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 13.6 0ZM4.9 13.3H2.6V6h2.3ZM3.75 5A1.33 1.33 0 1 1 5.1 3.67 1.33 1.33 0 0 1 3.75 5Zm9.55 8.3H11V9.75c0-.85 0-1.94-1.18-1.94S8.46 8.73 8.46 9.69v3.61H6.18V6h2.19v1h.03a2.4 2.4 0 0 1 2.16-1.19c2.31 0 2.74 1.52 2.74 3.5Z"/></svg></a><a class="ico" href="https://github.com/kaysonfelix" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a></div></nav>
 <!--
-  Lab notebook editor. Posts entries straight to the repo through GitHub's API.
+  Project editor. Posts log entries straight to the repo through GitHub's API.
   Only people added as collaborators on the repo can publish; each signs in with
   their own GitHub token (see HOW-TO-EDIT.md). Change these two lines if the repo moves.
 -->
@@ -90,7 +90,8 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 
 <div class="wrap">
   <div class="ed-head">
-    <h1>Lab notebook editor</h1>
+    <h1>Project editor</h1>
+    <a class="hint" href="https://kaysonfelix.goatcounter.com" target="_blank" rel="noopener" style="margin-left:auto;margin-right:12px">Site visits →</a>
     <div class="who" id="who" hidden></div>
   </div>
 
@@ -108,7 +109,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <p style="margin-top:12px"><b>If you own the site repo</b> (fine-grained token, limited to this one repo):</p>
       <ol>
         <li>GitHub <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token</b>.</li>
-        <li>Name it "Lab notebook" and set an expiration.</li>
+        <li>Name it "Project editor" and set an expiration.</li>
         <li><b>Repository access:</b> choose <b>Only select repositories</b> and pick the site repo. (The default, "Public repositories", is read-only and won't work.)</li>
         <li><b>Permissions → Repository permissions → Contents:</b> set to <b>Read and write</b>.</li>
         <li>Generate, copy the token, and paste it above.</li>
@@ -116,7 +117,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <p style="margin-top:12px"><b>If you're a collaborator</b> (GitHub doesn't let fine-grained tokens edit someone else's repo, so use a classic token):</p>
       <ol>
         <li>GitHub <b>Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token (classic)</b>.</li>
-        <li>Name it "Lab notebook", set an expiration, and check only <b>public_repo</b>.</li>
+        <li>Name it "Project editor", set an expiration, and check only <b>public_repo</b>.</li>
         <li>Generate, copy the token, and paste it above. Keep it private.</li>
       </ol>
     </details>
@@ -126,15 +127,15 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
   <div id="top" hidden>
     <div class="projbar"><div><label for="proj">Project</label><select id="proj"></select></div></div>
     <div class="modes" role="tablist">
-      <button type="button" role="tab" id="modeLog" aria-selected="true">New log entry</button>
-      <button type="button" role="tab" id="modeOv" aria-selected="false">Edit overview</button>
+      <button type="button" role="tab" id="modeLog" aria-selected="true">New project log entry</button>
+      <button type="button" role="tab" id="modeOv" aria-selected="false">Edit project overview</button>
       <button type="button" role="tab" id="modeHome" aria-selected="false">Homepage</button>
     </div>
   </div>
 
   <!-- ===================== NEW ENTRY ===================== -->
   <section class="card" id="form" hidden>
-    <h2>New entry</h2>
+    <h2>New project log entry</h2>
     <div class="row">
       <div><label for="date">Date</label><input type="date" id="date"></div>
       <div><label for="author">Author</label><input type="text" id="author"></div>
@@ -175,7 +176,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
 
   <!-- ===================== EDIT OVERVIEW ===================== -->
   <section class="card" id="ovCard" hidden>
-    <h2>Overview page</h2>
+    <h2>Project overview</h2>
     <p class="hint" style="margin-bottom:14px">The first line starting with <code># </code> is the project title. <code>## </code> lines are section headings (they also fill the page's sidebar). The line <code>{{sheet: bom.xlsx}}</code> shows the bill of materials spreadsheet.</p>
     <div class="tools" role="toolbar" aria-label="Formatting" data-for="ovBody">
       <button type="button" data-wrap="**" title="Bold"><b>B</b></button>
@@ -223,6 +224,22 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       <button class="secondary" id="liClear" type="button">Remove post</button>
       <span class="msg" id="liMsg" role="status"></span>
     </div>
+  </section>
+
+  <!-- ===================== HOMEPAGE: gallery ===================== -->
+  <section class="card" id="galCard" hidden>
+    <h2>Gallery</h2>
+    <p>Photos show in a column on the left side of the homepage, newest first. They're resized before upload.</p>
+    <div class="field" style="margin-top:16px">
+      <label for="galCap">Caption (optional)</label>
+      <input type="text" id="galCap" placeholder="e.g. SPIE chapter lab tour">
+    </div>
+    <input type="file" id="galFile" accept="image/*" hidden>
+    <div class="pub">
+      <button class="primary" id="galAdd" type="button">Choose photo and post…</button>
+      <span class="msg" id="galMsg" role="status"></span>
+    </div>
+    <ul class="recent" id="galList" style="margin-top:16px"></ul>
   </section>
 
   <!-- ===================== RECENT ===================== -->
@@ -432,10 +449,10 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
   /* ---------- modes ---------- */
   function setMode(m){
     $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov'); $('modeHome').setAttribute('aria-selected', m === 'home');
-    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov'; $('homeCard').hidden = m !== 'home';
+    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov'; $('homeCard').hidden = m !== 'home'; $('galCard').hidden = m !== 'home';
     document.querySelector('.projbar').hidden = m === 'home';
     if (m === 'ov' && !ov.loadedFor) loadOverview();
-    if (m === 'home' && !home.loaded) loadHome();
+    if (m === 'home' && !home.loaded){ loadHome(); drawGallery(); }
   }
   $('modeHome').onclick = () => setMode('home');
 
@@ -474,11 +491,57 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       cur.linkedin = value;
       const r = await gh(`/repos/${REPO}/contents/featured.json`, { method: 'PUT', body: JSON.stringify({ message: `Homepage: LinkedIn post (${user.login})`, content: b64(JSON.stringify(cur, null, 2) + '\n'), branch: BRANCH, ...(home.sha ? { sha: home.sha } : {}) }) });
       home.sha = r.content.sha;
-      msg(out, value ? 'Saved. The homepage shows this post in about a minute.' : 'Removed. The homepage shows "First post coming soon".', 'ok');
+      msg(out, value ? 'Saved. The homepage shows this post in about a minute.' : 'Removed. The homepage shows N/A.', 'ok');
     } catch (e){
       msg(out, (e.status === 403 || /not accessible/i.test(e.message)) ? "Your token can't change the site. Owner: token Contents must be 'Read and write'. Collaborator: use a classic token with public_repo." : 'Could not save: ' + e.message, 'err');
     } finally { $('liSave').disabled = false; }
   }
+
+  /* ---------- homepage: gallery ---------- */
+  async function readFeatured(){
+    try { const f = await gh(`/repos/${REPO}/contents/featured.json?ref=${BRANCH}`); return { sha: f.sha, data: JSON.parse(unb64(f.content)) }; }
+    catch (e){ if (e.status === 404) return { sha: null, data: {} }; throw e; }
+  }
+  async function writeFeatured(cur, sha, message){
+    return gh(`/repos/${REPO}/contents/featured.json`, { method: 'PUT', body: JSON.stringify({ message, content: b64(JSON.stringify(cur, null, 2) + '\n'), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+  }
+  const galErr = e => (e.status === 403 || /not accessible/i.test(e.message)) ? "Your token can't change the site. Owner: token Contents must be 'Read and write'. Collaborator: use a classic token with public_repo." : 'Could not save: ' + e.message;
+  async function drawGallery(){
+    const ul = $('galList'); ul.innerHTML = '<li class="hint">Loading…</li>';
+    let items = [];
+    try { items = (await readFeatured()).data.gallery || []; } catch (e){}
+    ul.innerHTML = items.length ? '' : '<li class="hint">No photos yet.</li>';
+    items.forEach((g, i) => {
+      const li = document.createElement('li'); li.style.cssText = 'display:flex;gap:12px;align-items:center';
+      const img = document.createElement('img'); img.src = g.src; img.alt = ''; img.style.cssText = 'width:72px;height:54px;object-fit:cover;border:1px solid var(--border)';
+      const txt = document.createElement('span'); txt.style.flex = '1'; txt.textContent = (g.caption || '(no caption)') + (g.date ? ' · ' + g.date : '');
+      const rm = document.createElement('button'); rm.type = 'button'; rm.className = 'secondary'; rm.textContent = 'Remove'; rm.style.padding = '6px 12px';
+      rm.onclick = async () => {
+        rm.disabled = true; msg($('galMsg'), 'Removing…');
+        try { const f = await readFeatured(); const list = (f.data.gallery || []).filter(x => x.src !== g.src); f.data.gallery = list; await writeFeatured(f.data, f.sha, `Gallery: remove photo (${user.login})`); msg($('galMsg'), 'Removed. The homepage updates in about a minute.', 'ok'); drawGallery(); }
+        catch (e){ msg($('galMsg'), galErr(e), 'err'); rm.disabled = false; }
+      };
+      li.append(img, txt, rm); ul.append(li);
+    });
+  }
+  $('galAdd').onclick = () => $('galFile').click();
+  $('galFile').onchange = async () => {
+    const file = $('galFile').files[0]; $('galFile').value = ''; if (!file) return;
+    const out = $('galMsg'); $('galAdd').disabled = true;
+    try {
+      msg(out, 'Resizing…'); const blob = await resize(file);
+      const date = today(), cap = $('galCap').value.trim();
+      const path = `media/gallery/${date}-${slug(cap || file.name.replace(/\.[^.]+$/, ''))}-${Date.now().toString(36).slice(-4)}.jpg`;
+      msg(out, 'Uploading photo…');
+      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Gallery photo (${user.login})`, content: await blobB64(blob), branch: BRANCH }) });
+      msg(out, 'Adding to the homepage…');
+      const f = await readFeatured(); const list = f.data.gallery || [];
+      list.unshift({ src: path, caption: cap, date }); f.data.gallery = list;
+      await writeFeatured(f.data, f.sha, `Gallery: add photo (${user.login})`);
+      $('galCap').value = ''; msg(out, 'Posted. The homepage shows it in about a minute.', 'ok'); drawGallery();
+    } catch (e){ msg(out, galErr(e), 'err'); }
+    finally { $('galAdd').disabled = false; }
+  };
   $('liSave').onclick = () => { const u = liEmbed($('liIn').value); if (!u) return msg($('liMsg'), 'Paste a LinkedIn embed code or post link first.', 'err'); saveHome(u); };
   $('liClear').onclick = () => { $('liIn').value = ''; liShow(); saveHome(''); };
   $('modeLog').onclick = () => setMode('log');
@@ -555,7 +618,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       const r = await gh(`/repos/${REPO}/contents/projects/${p}/overview.md`, { method: 'PUT', body: JSON.stringify({ message: `Overview update (${user.login})`, content: b64(text.replace(/\s*$/, '\n')), branch: BRANCH, ...(ov.sha ? { sha: ov.sha } : {}) }) });
       ov.sha = r.content.sha; ov.original = text;
       out.className = 'msg ok'; out.innerHTML = ''; out.append('Saved. Live in about a minute. ');
-      const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}`; a.textContent = 'Open the overview'; out.append(a);
+      const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}&view=overview`; a.textContent = 'Open the project overview'; out.append(a);
       const t = text.match(/^#\s+(.+)$/m); if (t) $('proj').selectedOptions[0].textContent = t[1].trim();
     } catch (e){
       let m = 'Could not save: ' + e.message;
@@ -590,7 +653,7 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       out.className = 'msg ok';
       out.innerHTML = '';
       out.append('Published. It will be live in about a minute. ');
-      const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}&view=log`; a.textContent = 'Open the lab notebook'; out.append(a);
+      const a = document.createElement('a'); a.href = `project.html?p=${encodeURIComponent(p)}&view=log`; a.textContent = 'Open the project log'; out.append(a);
       clearForm(false); await loadRecent();
     } catch(e){
       let t = 'Could not publish: ' + e.message;

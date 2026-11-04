@@ -11,7 +11,7 @@
     --placeholder:#eef1f4;
     color-scheme:light;
     /* To change fonts: swap the family names here and in the Google Fonts <link> above */
-    --serif:"Redaction",Georgia,"Times New Roman",serif;
+    --serif:Arial,Helvetica,sans-serif;
     --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   }
 
@@ -175,3 +175,36 @@
   .sheet-dl{display:inline-block;margin-top:8px;font:13px var(--mono)}
 
   .log-entry time .by{color:var(--fg)}
+
+  /* ===== site theme (matches the homepage): navy header, blue nav, white card on light gray ===== */
+  :root{ --bg:#08142f; --fg:#1b2540; --muted:#5a6a86; --border:#c5d3ea; --row:#eef3fc; --link:#2f74f0; --brand:#0d1b4f; --brand2:#2a63d4; }
+  body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(8,24,72,.25),rgba(8,24,72,.25)),url("media/bg.jpg") center/cover no-repeat}
+  body{position:relative;z-index:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55}
+  .site-inner{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .site-head{display:block;background:linear-gradient(90deg,#0d1b4f 0%,#14205e 60%,#2a1a5e 100%);color:#fff;padding:10px 0;text-align:center}
+  .site-head .site-name{display:block;color:#fff;font-size:1.4em;font-weight:bold;text-decoration:none}
+  .site-head .site-tag{display:block;opacity:.9;margin-top:2px;font-size:.85em}
+  .site-nav{background:var(--brand2);position:sticky;top:0;z-index:10}
+  .site-nav .site-inner{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;padding-block:6px}
+  .site-nav a{color:#fff;font-weight:bold;text-decoration:none}
+  .site-nav a:hover{text-decoration:underline}
+  .site-spacer{flex:1}
+  .wrap{max-width:1100px;margin:24px auto 40px;background:#fff;border:1px solid #c5d3ea;padding:28px max(20px,env(safe-area-inset-right,0px)) 36px max(20px,env(safe-area-inset-left,0px))}
+  @media (max-width:1140px){ .wrap{margin:16px 12px 32px} }
+  .back,.psub,.tabs a,.log-entry time,.side,.side h4,.sheet-dl,.md .sheet th,.md .sheet td.num{font-family:Arial,Helvetica,sans-serif}
+  .back{font-size:14px;font-weight:bold}
+  .ptitle{color:var(--brand);font-size:2rem}
+  .tabs a{font-size:15px;font-weight:bold}
+  .tabs a[aria-current="page"]{border-bottom-color:#2f74f0}
+  .log-entry h2,.md h2{color:var(--brand)}
+  .side h4{letter-spacing:0;text-transform:none;font-size:14px;font-weight:bold;color:var(--fg)}
+  .md .sheet th{text-transform:none;letter-spacing:0;font-size:13px;color:var(--fg)}
+  :root{ --mono:Arial,Helvetica,sans-serif; }
+  code,pre,kbd,textarea#ovBody,textarea#liIn{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .site-nav a.ico{display:inline-flex;align-items:center;opacity:.92}
+  .site-nav a.ico:hover{opacity:1}
+  .site-nav a.ico svg{width:18px;height:18px;fill:#fff}
+  .site-nav a.site-resume{order:99;background:#fff;color:var(--brand);padding:6px 14px;border-radius:2px}
+  .site-nav a.site-resume:hover{background:#dbe7fb;text-decoration:none}
+  .site-nav .site-email{color:#fff;font-weight:bold;font-size:.82em;letter-spacing:.02em;user-select:all}
+  .site-head .site-name,.site-head .site-tag{font-family:"Droid Serif","Noto Serif",Georgia,"Times New Roman",serif}

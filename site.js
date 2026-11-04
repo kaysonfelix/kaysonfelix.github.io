@@ -170,7 +170,7 @@ window.Site = (() => {
       html += `</tbody></table></div><a class="sheet-dl" href="${esc(url)}" download>Download ${esc(name)}</a>`;
       box.innerHTML = html;
     } catch (e) {
-      box.innerHTML = '<p class="empty">Bill of materials coming soon.</p>';
+      box.innerHTML = '<p class="empty">N/A</p>';
     }
   }
 

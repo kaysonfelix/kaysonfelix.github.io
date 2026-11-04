@@ -7,22 +7,22 @@ Everything is done on github.com. No code needed for project updates.
 ```
 index.html          ← homepage (name, links, projects, involvement, background, experience, latest updates)
 featured.json       ← which LinkedIn post the homepage shows (set it in admin.html)
-admin.html          ← editor: post lab notebook entries and edit project overviews
+admin.html          ← editor: post project log entries and edit project overviews
 project.html        ← project page template (don't edit)
 style.css           ← colors and fonts for the project pages and editor
 site.js             ← helper code (don't edit)
 .nojekyll           ← keep this; it tells GitHub to serve files as-is
 projects/
   project-1/
-    overview.md     ← "Overview" tab
-    log.md          ← "Lab notebook" tab
+    overview.md     ← "Project Overview" tab
+    log.md          ← "Project Log" tab
     bom.xlsx        ← bill of materials spreadsheet (shown on the Overview)
     images/         ← photos for this project
 ```
 
 ## Edit a project's Overview page (easy way)
 
-In admin.html, pick the project and choose **Edit overview**. Edit the text with the
+In admin.html, pick the project and choose **Edit project overview**. Edit the text with the
 toolbar, use **Photo** to upload a picture at the cursor, check **Preview**, and press
 **Save overview**. **Replace bom.xlsx** uploads a new bill of materials spreadsheet.
 
@@ -33,9 +33,9 @@ choose **Homepage**, paste it, check the preview, and press **Save to homepage**
 the post works too.) It's saved in `featured.json`. LinkedIn doesn't let sites pull your
 latest post automatically, so do this each time you post something you want featured.
 
-The **Latest lab notebook entry** box under it updates by itself.
+The **Latest project log entry** box under it updates by itself.
 
-## Post a lab notebook update (easy way)
+## Post a project log update (easy way)
 
 Open **kaysonfelix.github.io/admin.html**, sign in once, fill in the form and press
 **Publish entry**. Photos are resized automatically. The entry is live in about a minute.
@@ -52,7 +52,7 @@ Open **kaysonfelix.github.io/admin.html**, sign in once, fill in the form and pr
 Remove access any time from **Settings → Collaborators**. Every post is a commit, so the
 history shows who posted what, and any change can be undone.
 
-## Post a lab notebook update (by editing the file)
+## Post a project log update (by editing the file)
 
 1. Open `projects/<your-project>/log.md` on GitHub and tap the pencil icon.
 2. At the top (under the grey comment), add:
@@ -151,3 +151,18 @@ in any project or log entry, with `{{sheet: filename.xlsx}}` on its own line.
 Open `style.css`. Fonts are `--serif` and `--mono` at the top; colors are the lines
 starting with `--`. If you change a font, also update the Google Fonts `<link>` line
 near the top of both `index.html` and `project.html`.
+
+## Gallery (left side of the homepage)
+
+Open admin.html, sign in, choose the **Homepage** tab, scroll to **Gallery**, type a caption (optional) and press **Choose photo and post**. The photo is resized, saved in media/gallery/, and shows at the top of the gallery in about a minute. Use **Remove** next to a photo to take it off the homepage.
+
+## Website visits (unique and total)
+
+The site counts visits with GoatCounter (free, no cookies, no banner needed).
+
+One-time setup:
+1. Go to https://www.goatcounter.com/signup
+2. For "Code" type **kaysonfelix** (your stats will live at kaysonfelix.goatcounter.com). If that code is taken, pick another and change "kaysonfelix" in the last lines of index.html and project.html, and in the "Site visits" link in admin.html.
+3. Set "Site domain" to kaysonfelix.github.io, add your email and a password, and finish.
+
+To check visits: open https://kaysonfelix.goatcounter.com (or the "Site visits →" link at the top of admin.html). "Visitors" = unique people, "Pageviews" = total visits. To keep your own checks from counting, look in its Settings for the option to ignore IP addresses and add your own.

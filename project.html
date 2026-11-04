@@ -4,25 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Project</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Redaction:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header class="site-head"><div class="site-inner"><a class="site-name" href="index.html">Kayson Felix-Davila</a><span class="site-tag">B.S. Photonics Science &amp; Engineering, CREOL at the University of Central Florida</span></div></header>
+<nav class="site-nav"><div class="site-inner"><a href="index.html">Home</a><span class="site-email">kaysonfelix7@gmail.com</span><span class="site-spacer"></span><a class="site-resume" href="resume.pdf" target="_blank" rel="noopener">Resume</a><a class="ico" href="https://www.linkedin.com/in/kayson-felix-335b9043b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M13.6 0H2.4A2.4 2.4 0 0 0 0 2.4v11.2A2.4 2.4 0 0 0 2.4 16h11.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 13.6 0ZM4.9 13.3H2.6V6h2.3ZM3.75 5A1.33 1.33 0 1 1 5.1 3.67 1.33 1.33 0 0 1 3.75 5Zm9.55 8.3H11V9.75c0-.85 0-1.94-1.18-1.94S8.46 8.73 8.46 9.69v3.61H6.18V6h2.19v1h.03a2.4 2.4 0 0 1 2.16-1.19c2.31 0 2.74 1.52 2.74 3.5Z"/></svg></a><a class="ico" href="https://github.com/kaysonfelix" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg aria-hidden="true" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a></div></nav>
 <!--
   You don't need to edit this page. It shows any project folder:
-    project.html?p=project-1            -> Overview tab   (projects/project-1/overview.md)
-    project.html?p=project-1&view=log   -> Lab notebook   (projects/project-1/log.md)
+    project.html?p=project-1&view=overview -> Overview tab   (projects/project-1/overview.md)
+    project.html?p=project-1&view=log   -> Project Log    (projects/project-1/log.md)
 -->
 <div class="wrap">
-  <a class="back" href="index.html">← All projects</a>
+  <a class="back" href="index.html#projects">← All projects</a>
   <h1 class="ptitle" id="title">Project</h1>
   <div class="psub" id="sub"></div>
 
   <nav class="tabs" aria-label="Project sections">
-    <a id="tab-overview" href="#">Overview</a>
-    <a id="tab-log" href="#">Lab notebook<span class="count" id="count" hidden></span></a>
+    <a id="tab-log" href="#">Project Log<span class="count" id="count" hidden></span></a>
+    <a id="tab-overview" href="#">Project Overview</a>
   </nav>
 
   <div class="pgrid">
@@ -32,17 +32,34 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script>
+// a section heading with nothing under it shows N/A; blank table rows are dropped
+function markEmpty(root){
+  root.querySelectorAll('table').forEach(tb => {
+    tb.querySelectorAll('tbody tr').forEach(tr => { if (![...tr.cells].some(c => c.textContent.trim())) tr.remove(); });
+    if (!tb.querySelector('tbody tr')) tb.remove();
+  });
+  [...root.querySelectorAll('h2,h3,h4')].forEach(h => {
+    const lvl = +h.tagName[1]; let n = h.nextElementSibling, has = false;
+    while (n && !(/^H[1-6]$/.test(n.tagName) && +n.tagName[1] <= lvl)){
+      if (!/^H[1-6]$/.test(n.tagName)){ has = true; break; }
+      n = n.nextElementSibling;
+    }
+    if (!has){ const p = document.createElement('p'); p.className = 'empty'; p.textContent = 'N/A'; h.after(p); }
+  });
+}
+</script>
 <script src="site.js"></script>
 <script>
 (async () => {
   const q = new URLSearchParams(location.search);
   const id = (q.get('p') || '').replace(/[^a-z0-9_-]/gi, '');
-  const view = q.get('view') === 'log' ? 'log' : 'overview';
+  const view = q.get('view') === 'overview' ? 'overview' : 'log';   // the log is the default view
   const base = 'projects/' + id + '/';
   const content = document.getElementById('content'), side = document.getElementById('side');
 
   const tabO = document.getElementById('tab-overview'), tabL = document.getElementById('tab-log');
-  tabO.href = 'project.html?p=' + id;
+  tabO.href = 'project.html?p=' + id + '&view=overview';
   tabL.href = 'project.html?p=' + id + '&view=log';
   (view === 'log' ? tabL : tabO).setAttribute('aria-current', 'page');
 
@@ -56,7 +73,7 @@
   document.getElementById('title').textContent = title;
   document.title = title;
 
-  const entries = log ? Site.parseLog(log) : [];
+  const entries = (log ? Site.parseLog(log) : []).filter(e => /^\d{4}-\d{2}-\d{2}$/.test(e.date));
   if (entries.length){
     const c = document.getElementById('count');
     c.textContent = entries.length; c.hidden = false;
@@ -65,9 +82,10 @@
   }
 
   if (view === 'overview'){
-    if (!overview){ content.innerHTML = '<p class="empty">No overview yet.</p>'; return; }
+    if (!overview){ content.innerHTML = '<p class="empty">N/A</p>'; return; }
     const div = document.createElement('div'); div.className = 'md';
     Site.render(overview, base, div);
+    markEmpty(div);
     content.replaceChildren(div);
     // sidebar: jump links to each "## " section
     const hs = [...div.querySelectorAll('h2')];
@@ -80,7 +98,7 @@
       });
     }
   } else {
-    if (!entries.length){ content.innerHTML = '<p class="empty">No log entries yet.</p>'; return; }
+    if (!entries.length){ content.innerHTML = '<p class="empty">N/A</p>'; return; }
     const list = document.createElement('div'); list.className = 'log';
     side.innerHTML = '<h4>Entries</h4><ol></ol>';
     entries.forEach((e, i) => {
@@ -104,5 +122,8 @@
   }
 })();
 </script>
+<!-- Visit counter (GoatCounter). See visits at https://kaysonfelix.goatcounter.com
+     If you picked a different code when signing up, change "kaysonfelix" below. -->
+<script data-goatcounter="https://kaysonfelix.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
