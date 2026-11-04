@@ -1,4 +1,10 @@
 {
   "linkedin": "",
-  "gallery": []
+  "gallery": [],
+  "people": {
+    "kayson felix-davila": {
+      "photo": "media/people/kayson-felix-davila.jpg",
+      "login": "kaysonfelix"
+    }
+  }
 }
