@@ -177,9 +177,9 @@
   .log-entry time .by{color:var(--fg)}
 
   /* ===== site theme (matches the homepage): navy header, blue nav, white card on light gray ===== */
-  :root{ --bg:#08142f; --fg:#1b2540; --muted:#5a6a86; --border:#c5d3ea; --row:#eef3fc; --link:#2f74f0; --brand:#0d1b4f; --brand2:#2a63d4; }
+  :root{ --bg:#ffffff; --fg:#1b2540; --muted:#5a6a86; --border:#c5d3ea; --row:#eef3fc; --link:#2f74f0; --brand:#0d1b4f; --brand2:#2a63d4; }
   body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(8,24,72,.25),rgba(8,24,72,.25)),url("media/bg.jpg") center/cover no-repeat}
-  body{position:relative;z-index:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55}
+  body{position:relative;z-index:0;background:#08142f;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.55}
   .site-inner{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .site-head{display:block;background:linear-gradient(90deg,#0d1b4f 0%,#14205e 60%,#2a1a5e 100%);color:#fff;padding:10px 0;text-align:center}
   .site-head .site-name{display:block;color:#fff;font-size:1.4em;font-weight:bold;text-decoration:none}
