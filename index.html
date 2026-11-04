@@ -56,12 +56,13 @@
 
   .layout{display:flex;gap:20px;align-items:flex-start;padding-block:24px 40px}
   .main{flex:1}
-  .rail{width:340px;flex:none}
+  .side{width:260px;flex:none}
+  .rail{width:300px;flex:none}
   .page-body{flex:1;width:100%}
   .col{min-width:0;display:flex;flex-direction:column;gap:20px}
   .col > .card{margin-bottom:0}
   @media (max-width:560px){ .headshot{width:40px;height:40px} .headshot span{font-size:14px} header h1{font-size:1.3em} }
-  @media (max-width:1000px){ .layout{display:flex;flex-direction:column;align-items:stretch} .col{display:contents} .rail{width:auto} #projects{order:1} #liCard{order:2} #logCard{order:3} #galCard{order:4} }
+  @media (max-width:1000px){ .layout{display:flex;flex-direction:column;align-items:stretch} .col{display:contents} .rail,.side{width:auto} #projects{order:1} #liCard{order:2} #logCard{order:3} #galCard{order:4} }
 
   .card{background:var(--card);border:1px solid #c5d3ea;padding:18px 20px;margin-bottom:20px}
   .card h2{margin:0 0 12px;font-size:1.35em;color:var(--brand)}
@@ -116,7 +117,7 @@
   .status{color:var(--ok);font-weight:bold;font-size:.9em}
   .pgal{margin-top:22px;padding-top:16px;border-top:1px solid #dbe4f3}
   .pgal h4{margin:0 0 10px;font-size:.95em;color:var(--brand)}
-  .pgal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:300px}
+  .pgal-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:450px}
   .pgal-empty{aspect-ratio:4/3;max-width:100%;border:1.5px dashed #a9bbdc;display:flex;align-items:center;justify-content:center;font-size:.8em;color:var(--muted);background:#f7f9fe}
   .pgal-grid a{display:block;aspect-ratio:4/3;max-width:100%;overflow:hidden;border:1px solid #c5d3ea;background:#eef3fc}
   .pgal-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
@@ -186,6 +187,15 @@
 <div class="layout">
 
 
+  <!-- LEFT -->
+  <aside class="col side">
+    <div class="card" id="galCard">
+      <h2>Gallery</h2>
+      <!-- Add photos from admin.html → Homepage → Gallery. Newest shows first. -->
+      <div id="galBox"><p class="small" style="margin:0">Loading...</p></div>
+    </div>
+  </aside>
+
   <!-- MIDDLE -->
   <main class="col main">
     <div class="card" id="projects">
@@ -216,18 +226,13 @@
       <h2>Newest Project Log</h2>
       <div id="logBox"><p class="small">Loading...</p></div>
     </div>
-    <div class="card" id="galCard">
-      <h2>Gallery</h2>
-      <!-- Add photos from admin.html → Homepage → Gallery. Newest shows first. -->
-      <div id="galBox"><p class="small" style="margin:0">Loading...</p></div>
-    </div>
 
   </aside>
 
 </div>
 </div>
 
-<footer>© 2026 Kayson Felix-Davila. Last updated November 2026. <a class="admin-link" href="admin.html" title="Editor">Admin</a> <span class="admin-link" style="margin-left:6px">v1.4</span></footer>
+<footer>© 2026 Kayson Felix-Davila. Last updated November 2026. <a class="admin-link" href="admin.html" title="Editor">Admin</a> <span class="admin-link" style="margin-left:6px">v1.6</span></footer>
 
 <script src="site.js?v=20261104b"></script>
 <script>
@@ -236,21 +241,21 @@
 var logCache = {};
 function getLog(id){ return logCache[id] || (logCache[id] = Site.load('projects/' + id + '/log.md')); }
 
-// project gallery: the 4 most recent photos from that project's log entries
+// project gallery: the 6 most recent photos from that project's log entries
 async function fillGallery(id, grid){
   var log = await getLog(id), shots = [];
   var entries = log ? Site.parseLog(log).filter(function(e){ return /^\d{4}-\d{2}-\d{2}$/.test(e.date); }) : [];
   entries.forEach(function(e, k){ var re = /!\[([^\]]*)\]\(([^)\s]+)\)/g, m; while ((m = re.exec(e.body))) shots.push({ src: m[2], alt: m[1] || e.title, date: e.date, n: k + 1 }); });
   shots.sort(function(a, b){ return b.date.localeCompare(a.date) || a.n - b.n; });
   grid.innerHTML = '';
-  shots.slice(0, 4).forEach(function(s){
+  shots.slice(0, 6).forEach(function(s){
     var src = /^(https?:)?\/\//.test(s.src) || s.src.charAt(0) === '/' ? s.src : 'projects/' + id + '/' + s.src.replace(/^\.\//, '');
     var a = document.createElement('a'); a.href = 'project.html?p=' + encodeURIComponent(id) + '&view=log#e' + s.n; a.title = s.alt;
     var im = document.createElement('img'); im.src = src; im.alt = s.alt; im.loading = 'lazy'; im.onerror = function(){ a.remove(); };
     a.append(im); grid.append(a);
   });
   // empty slots: dotted boxes marked N/A
-  for (var k = Math.min(shots.length, 4); k < 4; k++){ var e = document.createElement('span'); e.className = 'pgal-empty'; e.textContent = 'N/A'; grid.append(e); }
+  for (var k = Math.min(shots.length, 6); k < 6; k++){ var e = document.createElement('span'); e.className = 'pgal-empty'; e.textContent = 'N/A'; grid.append(e); }
 }
 
 // projects: built from projects.json (falls back to the default list in site.js)

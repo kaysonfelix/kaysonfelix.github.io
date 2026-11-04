@@ -2,6 +2,12 @@
 
 Each update zip is named kaysonfelix-site-vX.Y.zip. The version shows faintly at the end of the homepage footer and at the top of admin.html, so you can check which one is live.
 
+## v1.6 (Nov 4, 2026)
+- Gallery moved to its own column on the left; projects are now in the center
+
+## v1.5 (Nov 4, 2026)
+- Project Gallery is now 3 across by 2 down (6 newest photos)
+
 ## v1.4 (Nov 4, 2026)
 - Project Gallery always shows 4 slots; slots without a photo are dotted boxes marked N/A
 
