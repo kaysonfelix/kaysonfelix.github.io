@@ -10,8 +10,8 @@
   Comments like this one never show on the site.
 -->
 
-## 2026-11-04 | test log 1 hellooo | kaysonfelix
+## YYYY-MM-DD | [Title of your first entry]
 
-test log 1
+[What you did, what happened, what you learned.]
 
-![](images/2026-11-04-test-log-1-hellooo.jpg)
+<!-- ![Caption](images/photo.jpg) -->

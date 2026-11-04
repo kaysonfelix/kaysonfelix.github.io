@@ -196,5 +196,22 @@ window.Site = (() => {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
-  return { load, render, parseLog, fmtDate, esc };
+  /* collaborator profile pictures (set in admin.html → Homepage → Profile picture) */
+  let peopleP = null;
+  function people(){
+    if (!peopleP) peopleP = fetch('featured.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).then(j => j.people || {}).catch(() => ({}));
+    return peopleP;
+  }
+  function avatar(name, map){
+    const p = (map || {})[String(name || '').trim().toLowerCase()];
+    const el = document.createElement('span'); el.className = 'avatar'; el.title = name || '';
+    if (p && typeof p.photo === 'string' && /^media\/people\/[\w.-]+$/.test(p.photo)){
+      const img = document.createElement('img'); img.src = p.photo; img.alt = ''; el.append(img);
+    } else {
+      el.textContent = String(name || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
+    return el;
+  }
+
+  return { load, render, parseLog, fmtDate, esc, people, avatar };
 })();

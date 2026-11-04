@@ -226,6 +226,26 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     </div>
   </section>
 
+  <!-- ===================== HOMEPAGE: profile picture ===================== -->
+  <section class="card" id="meCard" hidden>
+    <h2>Your profile picture</h2>
+    <p>Shows next to your name on every log entry you post. Each collaborator sets their own.</p>
+    <div style="display:flex;gap:16px;align-items:center;margin-top:14px;flex-wrap:wrap">
+      <span id="meAv" style="width:64px;height:64px;border-radius:50%;overflow:hidden;background:var(--row);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font:bold 20px Arial,sans-serif;color:var(--brand)"></span>
+      <div class="field" style="flex:1;min-width:200px;margin:0">
+        <label for="meName">Name on your log entries</label>
+        <input type="text" id="meName">
+        <p class="hint">Must match the Author name on your entries (it's filled in for you).</p>
+      </div>
+    </div>
+    <input type="file" id="meFile" accept="image/*" hidden>
+    <div class="pub">
+      <button class="primary" id="meAdd" type="button">Choose photo and save…</button>
+      <button class="secondary" id="meDel" type="button">Remove photo</button>
+      <span class="msg" id="meMsg" role="status"></span>
+    </div>
+  </section>
+
   <!-- ===================== HOMEPAGE: gallery ===================== -->
   <section class="card" id="galCard" hidden>
     <h2>Gallery</h2>
@@ -290,7 +310,8 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
     out.onclick = () => { store.del(); location.reload(); };
     $('who').append(img, span, out); $('who').hidden = false;
     $('signin').hidden = true; $('top').hidden = false; $('form').hidden = false; $('recentCard').hidden = false;
-    $('author').value = (user.name || user.login).split(' ')[0];
+    const savedName = (() => { try { return localStorage.getItem('labnb-name'); } catch(e){ return null; } })();
+    $('author').value = savedName || (user.name || user.login).split(' ')[0];
     $('date').value = today();
     await loadProjects();
   }
@@ -449,10 +470,10 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
   /* ---------- modes ---------- */
   function setMode(m){
     $('modeLog').setAttribute('aria-selected', m === 'log'); $('modeOv').setAttribute('aria-selected', m === 'ov'); $('modeHome').setAttribute('aria-selected', m === 'home');
-    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov'; $('homeCard').hidden = m !== 'home'; $('galCard').hidden = m !== 'home';
+    $('form').hidden = m !== 'log'; $('recentCard').hidden = m !== 'log'; $('ovCard').hidden = m !== 'ov'; $('homeCard').hidden = m !== 'home'; $('galCard').hidden = m !== 'home'; $('meCard').hidden = m !== 'home';
     document.querySelector('.projbar').hidden = m === 'home';
     if (m === 'ov' && !ov.loadedFor) loadOverview();
-    if (m === 'home' && !home.loaded){ loadHome(); drawGallery(); }
+    if (m === 'home' && !home.loaded){ loadHome(); drawGallery(); drawMe(); }
   }
   $('modeHome').onclick = () => setMode('home');
 
@@ -541,6 +562,60 @@ textarea{min-height:280px;resize:vertical;line-height:1.55}
       $('galCap').value = ''; msg(out, 'Posted. The homepage shows it in about a minute.', 'ok'); drawGallery();
     } catch (e){ msg(out, galErr(e), 'err'); }
     finally { $('galAdd').disabled = false; }
+  };
+
+  /* ---------- homepage: collaborator profile picture ---------- */
+  function squareJpeg(file, size = 256){
+    return new Promise((res, rej) => {
+      const img = new Image(), url = URL.createObjectURL(file);
+      img.onload = () => {
+        const s = Math.min(img.width, img.height), c = document.createElement('canvas'); c.width = c.height = size;
+        c.getContext('2d').drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
+        c.toBlob(b => { URL.revokeObjectURL(url); b ? res(b) : rej(new Error('resize failed')); }, 'image/jpeg', 0.88);
+      };
+      img.onerror = () => rej(new Error('Not an image: ' + file.name));
+      img.src = url;
+    });
+  }
+  function showMe(src){
+    const box = $('meAv'); box.innerHTML = '';
+    if (src){ const i = document.createElement('img'); i.src = src; i.alt = ''; i.style.cssText = 'width:100%;height:100%;object-fit:cover'; box.append(i); }
+    else box.textContent = ($('meName').value || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  }
+  async function drawMe(){
+    $('meName').value = $('author').value;
+    let p = null;
+    try { p = ((await readFeatured()).data.people || {})[$('meName').value.trim().toLowerCase()]; } catch (e){}
+    showMe(p && p.photo ? p.photo + '?t=' + Date.now() : '');
+  }
+  $('meName').addEventListener('change', () => {
+    const v = $('meName').value.trim(); if (!v) return;
+    $('author').value = v; try { localStorage.setItem('labnb-name', v); } catch(e){}
+    drawMe();
+  });
+  $('meAdd').onclick = () => { if (!$('meName').value.trim()) return msg($('meMsg'), 'Type your name first.', 'err'); $('meFile').click(); };
+  $('meFile').onchange = async () => {
+    const file = $('meFile').files[0]; $('meFile').value = ''; if (!file) return;
+    const out = $('meMsg'), name = $('meName').value.trim(); $('meAdd').disabled = true;
+    try {
+      msg(out, 'Cropping…'); const blob = await squareJpeg(file);
+      const path = `media/people/${slug(name)}.jpg`;
+      let sha = null; try { sha = (await gh(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`)).sha; } catch (e){}
+      msg(out, 'Uploading…');
+      await gh(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify({ message: `Profile picture: ${name} (${user.login})`, content: await blobB64(blob), branch: BRANCH, ...(sha ? { sha } : {}) }) });
+      const f = await readFeatured(); f.data.people = f.data.people || {};
+      f.data.people[name.toLowerCase()] = { photo: path, login: user.login };
+      await writeFeatured(f.data, f.sha, `Profile picture: ${name} (${user.login})`);
+      $('author').value = name; try { localStorage.setItem('labnb-name', name); } catch(e){}
+      showMe(URL.createObjectURL(blob));
+      msg(out, 'Saved. It shows next to your name on log entries in about a minute.', 'ok');
+    } catch (e){ msg(out, galErr(e), 'err'); }
+    finally { $('meAdd').disabled = false; }
+  };
+  $('meDel').onclick = async () => {
+    const out = $('meMsg'), key = $('meName').value.trim().toLowerCase(); if (!key) return;
+    try { const f = await readFeatured(); if (f.data.people && f.data.people[key]){ delete f.data.people[key]; await writeFeatured(f.data, f.sha, `Profile picture removed (${user.login})`); } showMe(''); msg(out, 'Removed. Your initials show instead.', 'ok'); }
+    catch (e){ msg(out, galErr(e), 'err'); }
   };
   $('liSave').onclick = () => { const u = liEmbed($('liIn').value); if (!u) return msg($('liMsg'), 'Paste a LinkedIn embed code or post link first.', 'err'); saveHome(u); };
   $('liClear').onclick = () => { $('liIn').value = ''; liShow(); saveHome(''); };

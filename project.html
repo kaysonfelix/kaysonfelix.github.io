@@ -107,12 +107,13 @@ function markEmpty(root){
       a.innerHTML = '<span class="d"></span>'; a.firstChild.textContent = Site.fmtDate(e.date);
       a.append(e.title); li.append(a); side.querySelector('ol').append(li);
     });
+    const ppl = await Site.people();
     for (const [i, e] of entries.entries()){
       const art = document.createElement('article'); art.className = 'log-entry'; art.id = 'e' + (i + 1);
       const time = document.createElement('time'); time.textContent = Site.fmtDate(e.date); if (e.date) time.dateTime = e.date;
       const col = document.createElement('div'); col.style.minWidth = '0';
       const h = document.createElement('h2'); h.textContent = e.title;
-      if (e.author){ const by = document.createElement('span'); by.className = 'by'; by.textContent = e.author; time.append(document.createElement('br'), by); }
+      if (e.author){ const by = document.createElement('span'); by.className = 'by byline'; const nm = document.createElement('span'); nm.textContent = e.author; by.append(Site.avatar(e.author, ppl), nm); time.append(document.createElement('br'), by); }
       const md = document.createElement('div'); md.className = 'md';
       Site.render(e.body, base, md);
       col.append(h, md); art.append(time, col); list.append(art);

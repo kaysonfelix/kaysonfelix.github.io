@@ -86,6 +86,11 @@
   .social .li svg{fill:#0a66c2}
   .social .gh svg{fill:#181717}
 
+  .log-pic{display:block;margin:6px 0 4px;border:1px solid #c5d3ea;background:#eef3fc}
+  .log-pic img{display:block;width:100%;height:auto;max-height:220px;object-fit:cover}
+  .avatar{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;overflow:hidden;background:#dbe7fb;color:var(--brand);font:bold 11px Arial,Helvetica,sans-serif;vertical-align:middle;flex:none;border:1px solid #c5d3ea}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .byline{display:inline-flex;align-items:center;gap:7px;margin-top:4px}
   /* gallery: newest photo on top */
   .gallery{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
   .gallery a{display:block;border:1px solid #c5d3ea;background:#eef3fc}
@@ -274,11 +279,25 @@ document.querySelectorAll('.project[data-href]').forEach(function(row){
   all.sort(function(a, b){ return b.date.localeCompare(a.date) || a.i - b.i; });
   var e = all[0], text = e.body.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/[#*_`>|]/g, ' ').replace(/\s+/g, ' ').trim();
   box.innerHTML = '';
-  var p1 = document.createElement('p'); p1.innerHTML = '<b></b><br><span class="small"></span>';
-  p1.querySelector('b').textContent = e.title; p1.querySelector('span').textContent = Site.fmtDate(e.date) + (e.author ? ', by ' + e.author : '');
+  var ppl = await Site.people();
+  var p1 = document.createElement('p'); p1.innerHTML = '<b></b><br><span class="small byline"></span>';
+  p1.querySelector('b').textContent = e.title;
+  var bl = p1.querySelector('.byline');
+  if (e.author) bl.append(Site.avatar(e.author, ppl));
+  bl.append(document.createTextNode(Site.fmtDate(e.date) + (e.author ? ', by ' + e.author : '')));
   var p2 = document.createElement('p'); p2.textContent = text.length > 160 ? text.slice(0, 157) + '...' : text;
   var a = document.createElement('a'); a.href = 'project.html?p=' + e.id + '&view=log'; a.textContent = 'Read more >>';
-  box.append(p1, p2, a);
+  var im = /!\[([^\]]*)\]\(([^)\s]+)\)/.exec(e.body), pic = null;
+  if (im){
+    var src = /^(https?:)?\/\//.test(im[2]) || im[2].charAt(0) === '/' ? im[2] : 'projects/' + e.id + '/' + im[2].replace(/^\.\//, '');
+    pic = document.createElement('a'); pic.href = a.href; pic.className = 'log-pic';
+    var img = document.createElement('img'); img.src = src; img.alt = im[1] || e.title; img.loading = 'lazy';
+    img.onerror = function(){ pic.remove(); };
+    pic.append(img);
+  }
+  box.append(p1);
+  if (pic) box.append(pic);
+  box.append(p2, a);
 })();
 
 // gallery (add photos in admin.html → Homepage)

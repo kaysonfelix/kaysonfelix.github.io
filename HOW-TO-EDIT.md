@@ -166,3 +166,7 @@ One-time setup:
 3. Set "Site domain" to kaysonfelix.github.io, add your email and a password, and finish.
 
 To check visits: open https://kaysonfelix.goatcounter.com (or the "Site visits →" link at the top of admin.html). "Visitors" = unique people, "Pageviews" = total visits. To keep your own checks from counting, look in its Settings for the option to ignore IP addresses and add your own.
+
+## Profile pictures on log entries
+
+Each collaborator: open admin.html, sign in, go to the **Homepage** tab, find **Your profile picture**, check the name matches what you put as Author on your entries, then press **Choose photo and save**. The photo is cropped to a square and shows next to your name on every log entry (homepage and project log). Without one, your initials show in a circle.
