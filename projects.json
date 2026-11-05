@@ -11,7 +11,7 @@
     {
       "id": "project-1",
       "title": "PAT Laser Tracking System",
-      "status": "In progress",
+      "status": "Planning",
       "tags": "beam steering, beacon tracking, closed-loop control, free-space optics",
       "summary": "A bench-scale pointing, acquisition and tracking (PAT) system that locks a laser onto a moving light beacon with closed-loop control, modeled on the terminals used in satellite laser links.",
       "thumb": "projects/project-1/cover.jpg"
