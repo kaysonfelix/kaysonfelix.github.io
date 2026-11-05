@@ -2,28 +2,8 @@
 
 A bench-scale pointing, acquisition and tracking (PAT) system that locks a laser onto a moving light beacon with closed-loop control, modeled on the terminals used in satellite laser links.
 
-## Goal
-
-## Results
-
-| Metric | Target | Achieved |
-|---|---|---|
-|  |  |  |
-
-## How it works
-
-### Optics
-
-### Electronics
-
-### Software / control
-
-## Bill of materials
+## Materials List
 
 {{sheet: bom.xlsx}}
-
-## Problems and fixes
-
-## Next steps
 
 ## References
