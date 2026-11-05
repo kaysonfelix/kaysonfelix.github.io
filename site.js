@@ -138,6 +138,8 @@ window.Site = (() => {
     return rows.map(r => r.map(c => (c.trim() !== '' && !isNaN(c)) ? +c : c));
   }
   async function embedSheet(p, url, name){
+    // full Excel-style viewer (sheet-viewer.js); the simple table below is only a fallback
+    if (window.SheetViewer){ const v = document.createElement('div'); p.replaceWith(v); return window.SheetViewer.mount(v, url, name); }
     const box = document.createElement('div'); box.className = 'sheet';
     box.innerHTML = '<p class="empty">Loading spreadsheet…</p>';
     p.replaceWith(box);

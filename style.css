@@ -211,3 +211,4 @@
   .avatar{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;overflow:hidden;background:#dbe7fb;color:var(--brand);font:bold 11px Arial,Helvetica,sans-serif;vertical-align:middle;flex:none;border:1px solid #c5d3ea}
   .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   .byline{display:inline-flex;align-items:center;gap:7px}
+  .pgrid > *{min-width:0}

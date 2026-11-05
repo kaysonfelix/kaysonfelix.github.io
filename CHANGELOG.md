@@ -2,6 +2,15 @@
 
 Each update zip is named kaysonfelix-site-vX.Y.zip. The version shows faintly at the end of the homepage footer and at the top of admin.html, so you can check which one is live.
 
+## v1.7 (Nov 5, 2026)
+- New spreadsheet viewer for {{sheet: file.xlsx}} in project overviews: works like Excel, read-only
+  - every sheet as a tab, column letters and row numbers, frozen panes
+  - cell formatting (bold/italic, font sizes and colors, fills, borders, wrapped text, alignment), merged cells, column widths, row heights
+  - number, currency, percent and date formats; formulas shown in the formula bar
+  - click or drag to select, Shift+click, arrow keys; Sum / Average / Count of the selection
+  - Find in sheet, zoom (buttons, slider, Ctrl+scroll), full screen, copy (Ctrl+C), download
+- New file: sheet-viewer.js
+
 ## v1.6 (Nov 4, 2026)
 - Gallery moved to its own column on the left; projects are now in the center
 

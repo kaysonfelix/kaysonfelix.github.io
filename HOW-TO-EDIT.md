@@ -192,3 +192,7 @@ admin.html → **Homepage** tab → Gallery. **Edit caption** to change a captio
 ## Updating the site's code without losing anything
 
 All your content lives in files the editor writes: projects.json, featured.json, the projects/ folder, media/gallery/ and media/people/. The update zips Claude sends contain ONLY code (the .html, .js, .css files and the site's built-in images), never those content files. So uploading an update zip can't erase logs, projects, photos or settings. Just upload everything in it.
+
+## Spreadsheets (bill of materials etc.)
+
+Put {{sheet: bom.xlsx}} on its own line in a project overview (it's already in the template). The file sits in that project's folder; replace it from admin.html → Edit project overview → "Replace bom.xlsx…", or upload a new file with the same name. Visitors get an Excel-style viewer: sheet tabs, formatting, formulas in the formula bar, select cells for Sum/Average/Count, Find, zoom, full screen and Download. It's view-only. Formulas show the values Excel last saved, so save the file in Excel before uploading.
