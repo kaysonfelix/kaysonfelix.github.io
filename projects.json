@@ -7,6 +7,14 @@
       "tags": "beam steering, beacon tracking, closed-loop control, free-space optics",
       "summary": "A bench-scale pointing, acquisition and tracking (PAT) system that locks a laser onto a moving light beacon with closed-loop control, modeled on the terminals used in satellite laser links.",
       "thumb": "projects/project-1/cover.jpg"
+    },
+    {
+      "id": "zemax-opticstudio-project-folder",
+      "title": "Zemax Opticstudio Project Folder",
+      "status": "In progress",
+      "tags": "",
+      "summary": "",
+      "thumb": ""
     }
   ]
 }
