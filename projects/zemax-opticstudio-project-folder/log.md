@@ -40,6 +40,6 @@ With the gap 15 mm too short: 5761 µrad RMS
 
 ![Zemax OpticStudio](images/2026-11-05-ideal-5x-keplerian-laser-beam-expander-a-1.jpg)
 
-![simulated lenses](images/2026-11-05-ideal-5x-keplerian-laser-beam-expander-a-1.jpg)
-
 ![drawn calculations](images/2026-11-05-ideal-5x-keplerian-laser-beam-expander-a-2.jpg)
+
+![simulated lenses](images/2026-11-05-ideal-5x-keplerian-laser-beam-expander-a.jpg)
