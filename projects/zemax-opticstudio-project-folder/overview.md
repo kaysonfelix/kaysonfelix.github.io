@@ -1,17 +1,3 @@
 # Zemax Opticstudio Project Folder
 
-One or two sentences on what this project is.
-
-## Goal
-
-## Results
-
-## How it works
-
-## Bill of materials
-
-## Problems and fixes
-
-## Next steps
-
-## References
+This is a collection of various projects and designs I created using Zemax Opticstudio.
